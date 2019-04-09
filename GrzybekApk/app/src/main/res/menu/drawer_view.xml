@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="single">
+        <item
+            android:icon="@drawable/ic_launcher_foreground"
+            android:id="@+id/ekran_glowny"
+            android:title="@string/menu_ekran_glowny"/>
+
+        <item
+                android:icon="@drawable/ic_launcher_foreground"
+                android:id="@+id/moje_wydarzenia"
+                android:title="@string/menu_moje_wydarzenia"/>
+
+        <item
+                android:icon="@drawable/ic_launcher_foreground"
+                android:id="@+id/utworz_wydarzenie"
+                android:title="@string/menu_utworz_wydarzenie"/>
+
+        <item
+                android:icon="@drawable/ic_launcher_foreground"
+                android:id="@+id/kalendarz_but"
+                android:title="@string/menu_kalendarz"/>
+    </group>
+</menu>
