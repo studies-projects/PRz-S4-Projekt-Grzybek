@@ -7,23 +7,29 @@ import android.support.design.widget.NavigationView
 import android.support.v4.app.FragmentManager
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBar
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import com.example.grzybekapk.R
 
 class EkranGlowny : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
 
+    private lateinit var toolbar: Toolbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ekran_glowny)
 
-        setSupportActionBar(findViewById(R.id.toolbar))
 
         if (savedInstanceState == null) {
+
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.frameLay, FragEkranStartowy.newInstance(),
                     "Test")
+                .replace(R.id.toolbarLayout, ToolbarClass.newInstance(),"Test2")
                 .commit()
         }
 
@@ -35,5 +41,10 @@ class EkranGlowny : AppCompatActivity() {
             true
         }
 
+
+
+
     }
+
+
 }
