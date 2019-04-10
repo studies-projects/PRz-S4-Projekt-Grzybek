@@ -1,4 +1,4 @@
-package com.example.grzybekapk.view
+package com.example.grzybekapk.view.aktywnosci
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
 
     fun onClickLogIn(v : View){
         val intent = Intent(this, EkranGlowny::class.java)
-        startActivity(intent);
+        startActivity(intent)
     }
 
 
