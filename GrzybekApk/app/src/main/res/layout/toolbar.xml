@@ -3,15 +3,6 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/my_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            style="@style/HeaderBar"
-            app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/Theme.AppCompat.Light"
-            android:elevation="4dp"
-            app:menu="@menu/toolbar_view"
-    />
+
 
 </RelativeLayout>
