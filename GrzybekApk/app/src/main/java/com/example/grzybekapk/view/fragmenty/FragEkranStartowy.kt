@@ -1,4 +1,4 @@
-package com.example.grzybekapk.view
+package com.example.grzybekapk.view.fragmenty
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,27 +11,9 @@ import android.view.ViewGroup
 import com.example.grzybekapk.R
 
 class FragEkranStartowy : Fragment(){
-
-
-    companion object {
-        fun newInstance(): FragEkranStartowy{
-            return FragEkranStartowy()
-        }
-    }
-    private lateinit var toolbar: Toolbar
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        var rootView: View = inflater.inflate(R.layout.fragment_ekran_startowy, container, false)
-
-
-
-
-        return rootView
+        return inflater!!.inflate(R.layout.fragment_ekran_startowy, container, false)
     }
-
-
-
-
 }

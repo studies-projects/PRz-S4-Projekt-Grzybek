@@ -9,9 +9,9 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".view.EkranGlowny">
+        <activity android:name=".view.aktywnosci.EkranGlowny">
         </activity>
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.aktywnosci.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
