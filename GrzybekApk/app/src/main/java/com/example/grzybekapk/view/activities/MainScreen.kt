@@ -37,17 +37,17 @@ class MainScreen : AppCompatActivity() {
                 var fragment: Fragment? = null
 
                 when(menuItem.itemId){                                          // Funny switch
-                    R.id.moje_wydarzenia -> {                                   // Creating fragments depending on choice
+                    R.id.my_events -> {                                   // Creating fragments depending on choice
                         fragment = FragMyEvents()
 
                     }
-                    R.id.ekran_glowny ->{
+                    R.id.main_screen ->{
                         fragment = FragStartScreen()
                     }
-                    R.id.utworz_wydarzenie ->{
+                    R.id.create_event ->{
                         fragment = FragCreateEvents()
                     }
-                    R.id.kalendarz_but ->{
+                    R.id.calendar_but ->{
                         fragment = FragCalendar()
                     }
                 }
@@ -65,7 +65,7 @@ class MainScreen : AppCompatActivity() {
 
         }
         if (savedInstanceState == null) {
-            navigationView.setCheckedItem(R.id.ekran_glowny)                    // On the beginning "EkranGłówny" is checked
+            navigationView.setCheckedItem(R.id.main_screen)                    // On the beginning "EkranGłówny" is checked
             val fragStartScreen = FragStartScreen()                           // Creating fragment for first use
             val manager = supportFragmentManager                                // Fragment transaction
             val transaction = manager.beginTransaction()
