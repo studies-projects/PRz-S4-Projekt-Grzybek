@@ -66,11 +66,11 @@ class MainScreen : AppCompatActivity() {
         }
         if (savedInstanceState == null) {
             navigationView.setCheckedItem(R.id.ekran_glowny)                    // On the beginning "EkranGłówny" is checked
-            val fragEkranStartowy = FragStartScreen()                           // Creating fragment for first use
+            val fragStartScreen = FragStartScreen()                           // Creating fragment for first use
             val manager = supportFragmentManager                                // Fragment transaction
             val transaction = manager.beginTransaction()
 
-            transaction.replace(R.id.frameLay, fragEkranStartowy)               // Replacement
+            transaction.replace(R.id.frameLay, fragStartScreen)               // Replacement
                 .commit()                                                       // Commit of your changes
         }
     }
