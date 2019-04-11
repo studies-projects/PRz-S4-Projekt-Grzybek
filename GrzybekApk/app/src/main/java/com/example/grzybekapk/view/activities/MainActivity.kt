@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickLogIn(v : View){
-        val intent = Intent(this, EkranGlowny::class.java)
+        val intent = Intent(this, MainScreen::class.java)
         startActivity(intent)
     }
 }

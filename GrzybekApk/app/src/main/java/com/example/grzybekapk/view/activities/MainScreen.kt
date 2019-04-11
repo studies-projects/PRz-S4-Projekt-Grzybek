@@ -14,7 +14,7 @@ import com.example.grzybekapk.view.fragments.FragCalendar
 import com.example.grzybekapk.view.fragments.FragMyEvents
 import com.example.grzybekapk.view.fragments.FragCreateEvents
 
-class EkranGlowny : AppCompatActivity() {
+class MainScreen : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
