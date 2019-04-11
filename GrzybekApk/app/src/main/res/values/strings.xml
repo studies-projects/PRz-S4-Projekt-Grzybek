@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">GrzybekApk</string>
+    <string name="log_button">Zaloguj przez FB</string>
+    <string name="menu_ekran_glowny">Ekran główny</string>
+    <string name="menu_moje_wydarzenia">Moje wydarzenia</string>
+    <string name="menu_utworz_wydarzenie">Utwórz wydarzenie</string>
+    <string name="menu_kalendarz">Kalendarz</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
