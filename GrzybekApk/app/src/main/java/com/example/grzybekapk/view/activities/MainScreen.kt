@@ -8,11 +8,14 @@ import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.view.MenuItem
+import android.view.View
+import android.widget.ArrayAdapter
 import com.example.grzybekapk.R
 import com.example.grzybekapk.view.fragments.FragStartScreen
 import com.example.grzybekapk.view.fragments.FragCalendar
 import com.example.grzybekapk.view.fragments.FragMyEvents
 import com.example.grzybekapk.view.fragments.FragCreateEvents
+import kotlinx.android.synthetic.main.fragment_start_screen.*
 
 class MainScreen : AppCompatActivity() {
 
@@ -73,6 +76,9 @@ class MainScreen : AppCompatActivity() {
             transaction.replace(R.id.frameLay, fragStartScreen)               // Replacement
                 .commit()                                                       // Commit of your changes
         }
+
+
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {   // Strange construction
@@ -83,4 +89,15 @@ class MainScreen : AppCompatActivity() {
             super.onOptionsItemSelected(item)
         }
     }
+
+    fun switchFrag(view: View){
+        val fragmentManager = supportFragmentManager
+        val newFragment = FragCreateEvents()
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frameLay,newFragment)
+        transaction.commit()
+    }
+
+
+
 }
