@@ -32,7 +32,7 @@ class MainScreen : AppCompatActivity() {
         supportActionBar?.setTitle(null)                                        // Deleting "Title" from toolbar
         toolbar.setNavigationIcon(R.drawable.ic_menu)                           // Setting a button for toolbar
 
-        drawerLayout = findViewById(R.id.drawer_layout)                         // Creating handle for layout with drawer (activity_main_screen.xml)
+        drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.navBar)          // Creating handle for pull-out menu
         navigationView.setNavigationItemSelectedListener { menuItem ->          // Managing events for pull-out menu
                 menuItem.isChecked = true                                       // Selecting items
@@ -91,11 +91,12 @@ class MainScreen : AppCompatActivity() {
     }
 
     fun switchFrag(view: View){
-        val fragmentManager = supportFragmentManager
+        val navigationView: NavigationView = findViewById(R.id.navBar)      // Creating handle for pull-out menu
         val newFragment = FragCreateEvents()
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.frameLay,newFragment)
         transaction.commit()
+        navigationView.setCheckedItem(R.id.create_event)
     }
 
 
