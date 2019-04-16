@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "939519300607",
+    "firebase_url": "https://prz-grzybek.firebaseio.com",
+    "project_id": "prz-grzybek",
+    "storage_bucket": "prz-grzybek.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939519300607:android:421b573e375a5fbc",
+        "android_client_info": {
+          "package_name": "com.example.grzybekapk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "939519300607-1qurgq4pdf2ec0h4d25a74jv5t0popli.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYa7qkzwrdC0KNK7viWShPU4Kuh88Kl48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "939519300607-1qurgq4pdf2ec0h4d25a74jv5t0popli.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
