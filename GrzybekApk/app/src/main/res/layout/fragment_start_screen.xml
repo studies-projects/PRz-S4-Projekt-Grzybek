@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent" android:id="@+id/relativeLayout">
 
+    <android.support.design.widget.FloatingActionButton
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:clickable="true"
+            android:id="@+id/AddEventButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            android:onClick="switchFrag"
+            app:useCompatPadding="false"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp" android:src="@android:drawable/ic_input_add"/>
     <TextView
+            android:text="Ekran główny"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ekran startowy"
-            android:id="@+id/testText"
-            android:layout_centerInParent="true"/>
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/textView2" app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="241dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.0"/>
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
