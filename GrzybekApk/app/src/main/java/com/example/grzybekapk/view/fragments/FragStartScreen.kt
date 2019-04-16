@@ -22,4 +22,8 @@ class FragStartScreen : Fragment(){
 
         return inflater!!.inflate(R.layout.fragment_start_screen, container, false)
     }
+
+    fun OknoDialogowe(v : View){
+
+    }
 }
