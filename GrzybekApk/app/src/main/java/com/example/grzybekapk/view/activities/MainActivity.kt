@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.example.grzybekapk.R
 
+
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,4 +18,5 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, MainScreen::class.java)
         startActivity(intent)
     }
+
 }
