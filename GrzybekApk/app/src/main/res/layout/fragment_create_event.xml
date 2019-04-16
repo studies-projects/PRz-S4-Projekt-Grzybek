@@ -13,12 +13,20 @@
     <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
               android:background="@drawable/custom_edit_text"
               android:id="@+id/edit_title"
-              android:layout_centerInParent="true"/>
+              android:layout_centerInParent="true"
+                android:hint="Wpisz tytuł"
+                android:textColor="#fff"
+                android:textColorHint="#fff"/>
 
     <EditText
             android:layout_width="match_parent" android:layout_height="match_parent"
             android:id="@+id/edit_description"
             android:layout_below="@+id/date_pick_button"
-            android:background="@drawable/custom_edit_text_2"/>
+            android:background="@drawable/custom_edit_text_2"
+            android:inputType="textMultiLine"
+            android:hint="Wpisz opis"
+            android:gravity="top"
+            android:textColor="#fff"
+            android:textColorHint="#fff"/>
 
 </RelativeLayout>
