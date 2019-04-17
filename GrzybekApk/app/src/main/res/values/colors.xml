@@ -3,5 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="colorActionBar">#303f9f</color>
+    <color name="colorActionBar">#30a9f4</color>
+    <color name="fbBlue">#3b5998</color>
+    <color name="fbBlueShadow">#304d89</color>
 </resources>

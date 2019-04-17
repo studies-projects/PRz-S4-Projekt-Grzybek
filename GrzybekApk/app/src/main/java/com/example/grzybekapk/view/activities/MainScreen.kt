@@ -43,7 +43,6 @@ class MainScreen : AppCompatActivity() {
                 when(menuItem.itemId){                                          // Funny switch
                     R.id.my_events -> {                                   // Creating fragments depending on choice
                         fragment = FragMyEvents()
-
                     }
                     R.id.main_screen ->{
                         fragment = FragStartScreen()

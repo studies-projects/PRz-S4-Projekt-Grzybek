@@ -1,32 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:padding="16dp">
 
     <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:id="@+id/date_pick_button"
             android:text="Wybierz datę"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/edit_title"
-    />
+            app:layout_constraintTop_toBottomOf="@id/edit_title"
+            app:layout_constraintStart_toStartOf="@id/edit_title"
+            app:layout_constraintBottom_toTopOf="@id/edit_description"
+            tools:layout_editor_absoluteY="218dp" tools:layout_editor_absoluteX="29dp"/>
 
-    <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
+    <EditText android:layout_width="340dp" android:layout_height="39dp"
               android:background="@drawable/custom_edit_text"
               android:id="@+id/edit_title"
-              android:layout_centerInParent="true"
-                android:hint="Wpisz tytuł"
-                android:textColor="#fff"
-                android:textColorHint="#fff"/>
+              app:layout_constraintTop_toTopOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintBottom_toTopOf="@id/date_pick_button"
+              android:paddingLeft="10dp"
+              android:hint="Wpisz tytuł"
+              android:layout_marginStart="16dp"
+              android:textColor="#000"
+              android:textColorHint="#000" tools:layout_editor_absoluteY="142dp" tools:layout_editor_absoluteX="29dp"/>
 
     <EditText
-            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:layout_width="340dp" android:layout_height="251dp"
             android:id="@+id/edit_description"
             android:layout_below="@+id/date_pick_button"
             android:background="@drawable/custom_edit_text_2"
             android:inputType="textMultiLine"
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="@id/date_pick_button"
+            app:layout_constraintTop_toBottomOf="@id/date_pick_button"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:hint="Wpisz opis"
             android:gravity="top"
-            android:textColor="#fff"
-            android:textColorHint="#fff"/>
+            android:textColor="#000"
+            android:textColorHint="#000" tools:layout_editor_absoluteY="288dp" tools:layout_editor_absoluteX="29dp"/>
+    <Button
+            android:text="Wybierz godzinę"
+            android:layout_width="wrap_content"
+            app:layout_constrainedHeight="true"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@id/edit_description"
+            app:layout_constraintTop_toBottomOf="@id/edit_title"
+            app:layout_constraintEnd_toEndOf="@id/edit_title"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="218dp"
+            tools:layout_editor_absoluteX="224dp" android:id="@+id/timePicker"/>
 
-</RelativeLayout>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/confirmButton"
+            app:layout_constraintRight_toRightOf="@id/edit_description"
+            app:layout_constraintTop_toBottomOf="@id/edit_description"
+            android:text="Zatwierdź"
+    />
+
+</android.support.constraint.ConstraintLayout>

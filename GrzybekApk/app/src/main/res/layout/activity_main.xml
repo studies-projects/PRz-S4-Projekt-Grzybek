@@ -11,9 +11,11 @@
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="16dp"
                 android:id="@+id/logIn"
                 android:text="@string/log_button"
                 android:layout_centerInParent="true"
-                android:onClick="onClickLogIn"/>
+                android:onClick="onClickLogIn"
+                android:background="@drawable/login_button_states"/>
 
 </RelativeLayout>
