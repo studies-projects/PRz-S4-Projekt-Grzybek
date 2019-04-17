@@ -1,16 +1,17 @@
 package com.example.grzybekapk.view.fragments
 
+<<<<<<< HEAD
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+=======
+>>>>>>> apkaBranch
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
-import android.support.v4.app.ListFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+<<<<<<< HEAD
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -22,6 +23,9 @@ import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_my_events.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
 import java.util.*
+=======
+import com.example.grzybekapk.R
+>>>>>>> apkaBranch
 
 class FragStartScreen : Fragment(){
     override fun onAttach(context: Context?) {
@@ -33,6 +37,7 @@ class FragStartScreen : Fragment(){
 
         return inflater!!.inflate(R.layout.fragment_start_screen, container, false)
     }
+<<<<<<< HEAD
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -63,4 +68,6 @@ class FragStartScreen : Fragment(){
     }
 
 
+=======
+>>>>>>> apkaBranch
 }
