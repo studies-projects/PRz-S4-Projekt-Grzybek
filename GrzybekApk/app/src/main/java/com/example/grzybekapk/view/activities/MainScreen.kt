@@ -16,6 +16,7 @@ import com.example.grzybekapk.view.fragments.FragCalendar
 import com.example.grzybekapk.view.fragments.FragMyEvents
 import com.example.grzybekapk.view.fragments.FragCreateEvents
 import kotlinx.android.synthetic.main.fragment_start_screen.*
+import java.util.ArrayList
 
 class MainScreen : AppCompatActivity() {
 
@@ -76,7 +77,6 @@ class MainScreen : AppCompatActivity() {
             transaction.replace(R.id.frameLay, fragStartScreen)               // Replacement
                 .commit()                                                       // Commit of your changes
         }
-
 
 
     }
