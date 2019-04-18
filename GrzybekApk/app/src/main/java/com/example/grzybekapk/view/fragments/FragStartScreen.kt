@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_start_screen.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class FragStartScreen : Fragment(){
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -36,19 +37,27 @@ class FragStartScreen : Fragment(){
         val eventNameArray = ArrayList<String>() // Array for event names from database
         val organizerNameArray = ArrayList<String>() // Array for event organizers from database
         val eventDescriptionArray = ArrayList<String>() // Array for event description from database
-        val eventDateArray = ArrayList<String>()   // Array for event date from database ???
-        val arrayAdapter = ArrayAdapter(activity,android.R.layout.simple_list_item_1,eventNameArray)
+        val eventDateArray = ArrayList<String>()   // Array for event date from database
+        val eventsArray = ArrayList<String>()   // Array for event name and date for list view
+        val arrayAdapter = ArrayAdapter(activity,android.R.layout.simple_list_item_1,eventsArray)
         eventsListView.adapter = arrayAdapter
 
+        //tak to musi być tak pojebane inaczej nie działa
+        val timestamp = Timestamp.now()
+        val todayDate = Date(timestamp.getSeconds() - 7200 ) // now - 2 hours
         var futureDate = Calendar.getInstance()
-        futureDate.add(Calendar.DATE, 7) // date in 7 days
+        futureDate.add(Calendar.DATE, 7) // now + 7 days
+
+        val local = Locale("pol") // localize date
+        val dateFormat  = SimpleDateFormat("EEE dd'.' MMM yyyy 'o' HH:mm",local) // long date format
+        val dateFormat2  = SimpleDateFormat("dd.MM HH:mm",local) // short date format
 
         // Access a Cloud Firestore instance from your Activity
         val db = FirebaseFirestore.getInstance()
 
         db.collection("Events")
-            .whereGreaterThanOrEqualTo("DateStart",Timestamp.now()) //from today
-            .whereLessThanOrEqualTo("DateStart",Timestamp(futureDate.time)) //to 7 days in the future
+            .whereGreaterThanOrEqualTo("DateStart",Timestamp(todayDate))//from now - 2 hours
+            .whereLessThanOrEqualTo("DateStart",Timestamp(futureDate.time)) //to now + 7 days in the future
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
@@ -56,11 +65,11 @@ class FragStartScreen : Fragment(){
                     organizerNameArray.add(document.data["Owner"] as String)
                     eventDescriptionArray.add(document.data["Desc"] as String)
                     val date : Timestamp = document.data["DateStart"] as Timestamp // save timestamp
-                    val local = Locale("pol")
-                    val dateFormat  = SimpleDateFormat("HH:mm EEEE dd'.' MMMM yyyy",local) // date format
-                    eventDateArray.add( dateFormat.format(date.toDate()) as String)
+                    eventDateArray.add( dateFormat.format(date.toDate()) as String) // timestamp to date to string
+                    eventsArray.add(dateFormat2.format(date.toDate()) as String + "    " + document.data["Name"] as String)
                     arrayAdapter.notifyDataSetChanged()
-                    Log.d(TAG, "${document.id} => ${document.data["Name"] }")
+
+                    Log.d(TAG, "${document.id} => ${document.data}")
                 }
             }
             .addOnFailureListener { exception ->
