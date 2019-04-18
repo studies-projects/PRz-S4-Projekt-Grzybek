@@ -57,7 +57,7 @@ class FragStartScreen : Fragment(){
                     eventDescriptionArray.add(document.data["Desc"] as String)
                     val date : Timestamp = document.data["DateStart"] as Timestamp // save timestamp
                     val local = Locale("pol")
-                    val dateFormat  = SimpleDateFormat("HH:mm EEEE dd'.' MMMM yyyy",local) // date format
+                    val dateFormat  = SimpleDateFormat(" EEE dd'.' MMM yyyy 'o' HH:mm ",local) // date format
                     eventDateArray.add( dateFormat.format(date.toDate()) as String)
                     arrayAdapter.notifyDataSetChanged()
                     Log.d(TAG, "${document.id} => ${document.data["Name"] }")
