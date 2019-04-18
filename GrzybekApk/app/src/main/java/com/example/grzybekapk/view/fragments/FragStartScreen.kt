@@ -17,6 +17,7 @@ import com.example.grzybekapk.view.activities.EventDetailsActivity
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_start_screen.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class FragStartScreen : Fragment(){
@@ -39,23 +40,27 @@ class FragStartScreen : Fragment(){
         val arrayAdapter = ArrayAdapter(activity,android.R.layout.simple_list_item_1,eventNameArray)
         eventsListView.adapter = arrayAdapter
 
-        var date = Calendar.getInstance()
-        date.add(Calendar.DATE, 7)
+        var futureDate = Calendar.getInstance()
+        futureDate.add(Calendar.DATE, 7) // date in 7 days
 
         // Access a Cloud Firestore instance from your Activity
         val db = FirebaseFirestore.getInstance()
 
         db.collection("Events")
             .whereGreaterThanOrEqualTo("DateStart",Timestamp.now()) //from today
-            .whereLessThanOrEqualTo("DateStart",Timestamp(date.time)) //to 7 days in the future
+            .whereLessThanOrEqualTo("DateStart",Timestamp(futureDate.time)) //to 7 days in the future
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     eventNameArray.add(document.data["Name"] as String)
                     organizerNameArray.add(document.data["Owner"] as String)
                     eventDescriptionArray.add(document.data["Desc"] as String)
+                    val date : Timestamp = document.data["DateStart"] as Timestamp // save timestamp
+                    val local = Locale("pol")
+                    val dateFormat  = SimpleDateFormat("HH:mm EEEE dd'.' MMMM yyyy",local) // date format
+                    eventDateArray.add( dateFormat.format(date.toDate()) as String)
                     arrayAdapter.notifyDataSetChanged()
-                    Log.d(TAG, "${document.id} => ${document.data["Name"] }, ${eventNameArray}")
+                    Log.d(TAG, "${document.id} => ${document.data["Name"] }")
                 }
             }
             .addOnFailureListener { exception ->
@@ -67,7 +72,7 @@ class FragStartScreen : Fragment(){
             intent.putExtra("name",eventNameArray[i])
             intent.putExtra("description",eventDescriptionArray[i])
             intent.putExtra("organizer",organizerNameArray[i])
-            //intent.putExtra("date",eventDateArray[i])                  // to dodałem
+            intent.putExtra("date",eventDateArray[i])
             startActivity(intent)
         }
     }
