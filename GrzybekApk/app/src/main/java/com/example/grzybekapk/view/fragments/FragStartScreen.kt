@@ -39,31 +39,28 @@ class FragStartScreen : Fragment(){
         val arrayAdapter = ArrayAdapter(activity,android.R.layout.simple_list_item_1,eventNameArray)
         eventsListView.adapter = arrayAdapter
 
-        eventNameArray.add("Flanki")                    // hardcoded for testing, waiting for backend boys ( ͡° ͜ʖ ͡°)
-        organizerNameArray.add("Mati")
-        eventDescriptionArray.add("Final")
-        eventNameArray.add("Grill")                    // hardcoded for testing, waiting for backend boys ( ͡° ͜ʖ ͡°)
-        organizerNameArray.add("Barti")
-        eventDescriptionArray.add("Grillowanie na grzybku")
+        var date = Calendar.getInstance()
+        date.add(Calendar.DATE, 7)
 
         // Access a Cloud Firestore instance from your Activity
         val db = FirebaseFirestore.getInstance()
 
         db.collection("Events")
-            //Get all
+            .whereGreaterThanOrEqualTo("DateStart",Timestamp.now()) //from today
+            .whereLessThanOrEqualTo("DateStart",Timestamp(date.time)) //to 7 days in the future
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     eventNameArray.add(document.data["Name"] as String)
                     organizerNameArray.add(document.data["Owner"] as String)
                     eventDescriptionArray.add(document.data["Desc"] as String)
+                    arrayAdapter.notifyDataSetChanged()
                     Log.d(TAG, "${document.id} => ${document.data["Name"] }, ${eventNameArray}")
                 }
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
             }
-
 
         eventsListView.onItemClickListener = AdapterView.OnItemClickListener{adapterView,view,i,l->
             val intent = Intent(activity,EventDetailsActivity::class.java)
@@ -72,9 +69,5 @@ class FragStartScreen : Fragment(){
             intent.putExtra("organizer",organizerNameArray[i])
             startActivity(intent)
         }
-
-
-
-
     }
 }
