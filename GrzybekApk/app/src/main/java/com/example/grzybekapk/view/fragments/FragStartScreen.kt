@@ -35,7 +35,7 @@ class FragStartScreen : Fragment(){
         val eventNameArray = ArrayList<String>() // Array for event names from database
         val organizerNameArray = ArrayList<String>() // Array for event organizers from database
         val eventDescriptionArray = ArrayList<String>() // Array for event description from database
-        //val eventDateArray = ArrayList<Date>()  Array for event date from database ???
+        val eventDateArray = ArrayList<String>()   // Array for event date from database ???
         val arrayAdapter = ArrayAdapter(activity,android.R.layout.simple_list_item_1,eventNameArray)
         eventsListView.adapter = arrayAdapter
 
@@ -67,6 +67,7 @@ class FragStartScreen : Fragment(){
             intent.putExtra("name",eventNameArray[i])
             intent.putExtra("description",eventDescriptionArray[i])
             intent.putExtra("organizer",organizerNameArray[i])
+            //intent.putExtra("date",eventDateArray[i])                  // to dodałem
             startActivity(intent)
         }
     }
