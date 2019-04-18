@@ -9,9 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
+import android.widget.*;
 
 import com.example.grzybekapk.R;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
@@ -28,46 +26,49 @@ import java.util.Locale;
 
 public class FragCalendar extends Fragment {
 
+    //Zrobienie kalendarza okazało się trudne XD
+
     private Calendar currentCalender = Calendar.getInstance(Locale.getDefault());
     private SimpleDateFormat dateFormatForDisplaying = new SimpleDateFormat("dd-M-yyyy hh:mm:ss a", Locale.getDefault());
     private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMM - yyyy", Locale.getDefault());
     private CompactCalendarView compactCalendarView;
     private ActionBar toolbar;
+    private TextView showMonthYear;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mainTabView = inflater.inflate(R.layout.fragment_calendar,container,false);
+        View view = inflater.inflate(R.layout.fragment_calendar,container,false);
 
         final List<String> mutableBookings = new ArrayList<>();
 
-        final ListView bookingsListView = mainTabView.findViewById(R.id.bookings_listview);
-        final Button showPreviousMonthBut = mainTabView.findViewById(R.id.prev_button);
-        final Button showNextMonthBut = mainTabView.findViewById(R.id.next_button);
-
+        final ListView bookingsListView = view.findViewById(R.id.bookings_listview);
+        final ImageButton showPreviousMonthBut = view.findViewById(R.id.prev_button);
+        final ImageButton showNextMonthBut = view.findViewById(R.id.next_button);
+        showMonthYear = view.findViewById(R.id.month_view);
         final ArrayAdapter adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, mutableBookings);
 
         bookingsListView.setAdapter(adapter);
-        compactCalendarView = mainTabView.findViewById(R.id.compactcalendar_view);
+        compactCalendarView = view.findViewById(R.id.compactcalendar_view);
 
-        compactCalendarView.setUseThreeLetterAbbreviation(false);
+        compactCalendarView.setUseThreeLetterAbbreviation(true);
         compactCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
         compactCalendarView.setIsRtl(false);
-        compactCalendarView.displayOtherMonthDays(false);
+        compactCalendarView.displayOtherMonthDays(true);
         loadEvents();
-        loadEventsForYear(2017);
+        loadEventsForYear(2019);
         compactCalendarView.invalidate();
 
         logEventsByMonth(compactCalendarView);
 
 
         toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        toolbar.setTitle("Kalendarz: " + dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth()));
+        toolbar.setTitle("Kalendarz");
+        showMonthYear.setText(dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth()));
 
         //set title on calendar scroll
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
-                toolbar.setTitle(dateFormatForMonth.format(dateClicked));
                 List<Event> bookingsFromMap = compactCalendarView.getEvents(dateClicked);
                 if (bookingsFromMap != null) {
                     mutableBookings.clear();
@@ -76,12 +77,11 @@ public class FragCalendar extends Fragment {
                     }
                     adapter.notifyDataSetChanged();
                 }
-
             }
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
-                toolbar.setTitle("Kalendarz: " + dateFormatForMonth.format(firstDayOfNewMonth));
+                showMonthYear.setText(dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth()));
             }
         });
 
@@ -91,7 +91,6 @@ public class FragCalendar extends Fragment {
                 compactCalendarView.scrollLeft();
             }
         });
-
         showNextMonthBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,23 +111,22 @@ public class FragCalendar extends Fragment {
 
 
         // uncomment below to show indicators above small indicator events
-        // compactCalendarView.shouldDrawIndicatorsBelowSelectedDays(true);
+        //compactCalendarView.shouldDrawIndicatorsBelowSelectedDays(true);
 
         // uncomment below to open onCreate
         //openCalendarOnCreate(v);
 
-        return mainTabView;
+        return view;
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        toolbar.setTitle("Kalendarz: " + dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth()));
+        showMonthYear.setText(dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth()));
     }
 
     private void loadEvents() {
-        addEvents(-1, -1);
         addEvents(Calendar.DECEMBER, -1);
         addEvents(Calendar.AUGUST, -1);
     }
