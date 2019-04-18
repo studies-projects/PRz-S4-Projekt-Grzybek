@@ -22,6 +22,7 @@ class FragCreateEvents: Fragment() {
     private lateinit var timePickerButton: Button
     private lateinit var calendar: Calendar
     private lateinit var dpd: DatePickerDialog
+    private lateinit var date: Calendar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -33,20 +34,14 @@ class FragCreateEvents: Fragment() {
         datePickerButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 calendar = Calendar.getInstance()
+                date = Calendar.getInstance()
                 var day: Int = calendar.get(Calendar.DAY_OF_MONTH)
                 var month: Int = calendar.get(Calendar.MONTH)
                 var year: Int = calendar.get(Calendar.YEAR)
 
                 dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, nYear, nMonth, nDay ->
-                    if(nDay <10 && nMonth < 9){
-                        datePickerButton.setText("0" + nDay + "-0" + (nMonth+1) + "-" + nYear)
-                    } else if(nDay < 10){
-                        datePickerButton.setText("0" + nDay + "-" + (nMonth+1) + "-" + nYear)
-                    } else if (nMonth < 9){
-                        datePickerButton.setText("" + nDay + "-0" + (nMonth+1) + "-" + nYear)
-                    } else {
-                        datePickerButton.setText("" + nDay + "-" + (nMonth+1) + "-" + nYear)
-                    }
+                    date.set(nYear, nMonth, nDay)
+                    datePickerButton.setText(SimpleDateFormat("dd-MM-yyyy").format(date.time))
                 }, year, month, day)
                 dpd.datePicker.minDate = System.currentTimeMillis()
                 dpd.show()
