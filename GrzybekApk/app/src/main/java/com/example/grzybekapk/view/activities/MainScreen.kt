@@ -9,14 +9,11 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
 import com.example.grzybekapk.R
-import com.example.grzybekapk.view.fragments.FragStartScreen
 import com.example.grzybekapk.view.fragments.FragCalendar
+import com.example.grzybekapk.view.fragments.FragStartScreen
 import com.example.grzybekapk.view.fragments.FragMyEvents
 import com.example.grzybekapk.view.fragments.FragCreateEvents
-import kotlinx.android.synthetic.main.fragment_start_screen.*
-import java.util.ArrayList
 
 class MainScreen : AppCompatActivity() {
 

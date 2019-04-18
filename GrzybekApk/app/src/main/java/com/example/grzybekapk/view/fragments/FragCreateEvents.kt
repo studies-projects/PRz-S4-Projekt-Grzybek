@@ -10,18 +10,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.TimePicker
 import com.example.grzybekapk.R
 import kotlinx.android.synthetic.main.fragment_create_event.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class FragCreateEvents: Fragment() {
+class FragCreateEvents: Fragment(){
 
     private lateinit var datePickerButton: Button
     private lateinit var timePickerButton: Button
     private lateinit var calendar: Calendar
     private lateinit var dpd: DatePickerDialog
+    private lateinit var tpd: TimePickerDialog
     private lateinit var date: Calendar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -51,12 +53,15 @@ class FragCreateEvents: Fragment() {
         timePickerButton.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?){
                 calendar = Calendar.getInstance()
-                val timeSetListener = TimePickerDialog.OnTimeSetListener{timePicker, hour, minute ->
-                    calendar.set(Calendar.HOUR_OF_DAY, hour)
-                    calendar.set(Calendar.MINUTE, minute)
+                var hour = calendar.get(Calendar.HOUR_OF_DAY)
+                var minute = calendar.get(Calendar.MINUTE)
+
+                tpd = TimePickerDialog(activity, TimePickerDialog.OnTimeSetListener{view, nHour, nMinute ->
+                    calendar.set(Calendar.HOUR_OF_DAY, nHour)
+                    calendar.set(Calendar.MINUTE, nMinute)
                     timePickerButton.setText(SimpleDateFormat("HH:mm").format(calendar.time))
-                }
-                TimePickerDialog(view.context, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show()
+                }, hour, minute, true)
+                tpd.show()
             }
         })
         return view

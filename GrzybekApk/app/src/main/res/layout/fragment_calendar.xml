@@ -1,11 +1,55 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
+                android:id="@+id/main_content"
+                android:layout_marginTop="?actionBarSize"
+>
 
 
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-    android:text="Kalendarz"
-    android:layout_centerInParent="true"/>
+    <com.github.sundeepk.compactcalendarview.CompactCalendarView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/compactcalendar_view"
+            android:layout_width="fill_parent"
+            android:layout_height="250dp"
+            app:compactCalendarTargetHeight="250dp"
+            app:compactCalendarTextSize="12sp"
+            app:compactCalendarBackgroundColor="#ffe95451"
+            app:compactCalendarTextColor="#fff"
+            app:compactCalendarCurrentSelectedDayBackgroundColor="#ffbd5f5f"
+            app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
+            app:compactCalendarCurrentDayIndicatorStyle="fill_large_indicator"
+            app:compactCalendarEventIndicatorStyle="small_indicator"
+            app:compactCalendarOtherMonthDaysTextColor="#534c4c"
+            app:compactCalendarShouldSelectFirstDayOfMonthOnScroll="true"
+    />
+
+    <Button
+            android:layout_below="@+id/compactcalendar_view"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/prev_button"
+            android:text="Scroll Left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    <Button
+            android:layout_below="@+id/compactcalendar_view"
+            android:layout_alignParentRight="true"
+            android:id="@+id/next_button"
+            android:text="Scroll Right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+
+    <ListView
+            android:id="@+id/bookings_listview"
+            android:layout_below="@+id/next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+    </ListView>
 
 </RelativeLayout>
