@@ -42,7 +42,7 @@ class FragStartScreen : Fragment(){
         val arrayAdapter = ArrayAdapter(activity,android.R.layout.simple_list_item_1,eventsArray)
         eventsListView.adapter = arrayAdapter
 
-        //tak to musi być tak pojebane inaczej nie działa
+        //it has to be this way
         val timestamp = Timestamp.now()
         val todayDate = Date(timestamp.getSeconds() - 7200 ) // now - 2 hours
         var futureDate = Calendar.getInstance()
