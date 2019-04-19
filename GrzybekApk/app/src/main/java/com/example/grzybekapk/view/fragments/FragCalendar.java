@@ -63,6 +63,7 @@ public class FragCalendar extends Fragment {
 
         toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         toolbar.setTitle("Kalendarz");
+
         showMonthYear.setText(dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth()));
 
         //set title on calendar scroll
