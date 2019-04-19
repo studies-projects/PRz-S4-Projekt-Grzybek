@@ -27,7 +27,6 @@ class MainScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_screen)
 
-
         toolbar = findViewById(R.id.toolbar)                                    // Creating handle for toolbar
         setSupportActionBar(toolbar)                                            // Setting toolbar in activity
         supportActionBar?.setTitle(null)                                        // Deleting "Title" from toolbar

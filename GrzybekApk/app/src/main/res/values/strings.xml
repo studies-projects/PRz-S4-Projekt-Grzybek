@@ -10,6 +10,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="eventName">TextView</string>
     <string name="organizator">Organizator:</string>
-    <string name="data">Data:</string>
+    <string name="data">Rozpoczęcie:</string>
     <string name="eventText">textview</string>
 </resources>
