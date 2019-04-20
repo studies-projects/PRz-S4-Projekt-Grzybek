@@ -6,19 +6,25 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.crashlytics.android.Crashlytics.TAG
 
 import com.example.grzybekapk.R
 import com.example.grzybekapk.view.DataForEvents
 import com.example.grzybekapk.view.activities.EventDetailsActivity
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
 
 import java.text.SimpleDateFormat
 import java.util.*
+
+
 
 class FragCalendar : Fragment() {
 
@@ -27,12 +33,12 @@ class FragCalendar : Fragment() {
     private var toolbar: ActionBar? = null
     private var showMonthYear: TextView? = null
     private var bookingsFromMap: List<Event>? = ArrayList()
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
 
         val mutableBookings = ArrayList<String>()
-
 
         val bookingsListView = view.findViewById<ListView>(R.id.bookings_listview)
         val showPreviousMonthBut = view.findViewById<ImageButton>(R.id.prev_button)
@@ -48,15 +54,17 @@ class FragCalendar : Fragment() {
         compactCalendarView!!.setIsRtl(false)
         compactCalendarView!!.displayOtherMonthDays(true)
 
-        compactCalendarView!!.addEvents(events)
-
-        compactCalendarView!!.invalidate()
-
-
         toolbar = (activity as AppCompatActivity).supportActionBar
         toolbar!!.title = "Kalendarz"
 
         showMonthYear!!.text = dateFormatForMonth.format(compactCalendarView!!.firstDayOfCurrentMonth)
+
+        val firstDayOfMonth = Calendar.getInstance()
+        firstDayOfMonth.time = compactCalendarView!!.firstDayOfCurrentMonth
+
+        getEvents(firstDayOfMonth)
+
+        compactCalendarView!!.invalidate()
 
         bookingsListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             val evClicked = bookingsFromMap!![position]
@@ -85,13 +93,23 @@ class FragCalendar : Fragment() {
             }
 
 
+
             override fun onMonthScroll(firstDayOfNewMonth: Date) {
                 showMonthYear!!.text = dateFormatForMonth.format(compactCalendarView!!.firstDayOfCurrentMonth)
+                getEvents(firstDayOfMonth)
             }
         })
 
-        showPreviousMonthBut.setOnClickListener { compactCalendarView!!.scrollLeft() }
-        showNextMonthBut.setOnClickListener { compactCalendarView!!.scrollRight() }
+        showPreviousMonthBut.setOnClickListener {
+            compactCalendarView!!.scrollLeft()
+            firstDayOfMonth.add(Calendar.MONTH,-1)
+
+        }
+        showNextMonthBut.setOnClickListener {
+            compactCalendarView!!.scrollRight()
+            firstDayOfMonth.add(Calendar.MONTH,1)
+
+        }
 
 
         compactCalendarView!!.setAnimationListener(object : CompactCalendarView.CompactCalendarAnimationListener {
@@ -107,9 +125,39 @@ class FragCalendar : Fragment() {
         showMonthYear!!.text = dateFormatForMonth.format(compactCalendarView!!.firstDayOfCurrentMonth)
     }
 
+    fun getEvents(firstDayOfMonth: Calendar){
+        compactCalendarView!!.removeAllEvents()
+        val lastDayOfMonth = Calendar.getInstance()
+        lastDayOfMonth.add(Calendar.MONTH,1)
+        lastDayOfMonth.set(Calendar.HOUR,23)
+        lastDayOfMonth.set(Calendar.MINUTE,59)
+        lastDayOfMonth.set(Calendar.SECOND,59)
+
+        db.collection("Events")
+            .whereGreaterThanOrEqualTo("DateStart",Timestamp(firstDayOfMonth.time))
+            .whereLessThanOrEqualTo("DateStart",Timestamp(lastDayOfMonth.time))
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    var timestamp = document.data["DateStart"] as Timestamp
+                    var date :Date = timestamp.toDate()
+                    val cal = Calendar.getInstance()
+                    cal.setTime(date)
+                    var event = DataForEvents(document.data["Name"] as String, document.data["Desc"] as String,cal,document.data["Owner"] as String)
+
+                    createEvent(event.date,event)
+
+                    Log.d(TAG, "${document.id} => ${document.data}")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+        compactCalendarView!!.addEvents(events)
+    }
+
     companion object {
         private val events = ArrayList<Event>()
-
 
         //Dwie statyczne funkcje do dodawania wydarzeń w kalendarzu, bierzcie jak swoje
         fun createEvent(date: Calendar, `object`: DataForEvents) {
@@ -121,5 +169,7 @@ class FragCalendar : Fragment() {
             events.add(Event(Color.rgb(red, green, blue), date.timeInMillis, `object`))
         }
     }
+
+
 
 }
