@@ -7,7 +7,7 @@
 
     <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:id="@+id/date_pick_button"
-            android:text="Wybierz datę"
+            android:text="@string/default_date"
             app:layout_constraintTop_toBottomOf="@id/edit_title"
             app:layout_constraintStart_toStartOf="@id/edit_title"
             app:layout_constraintBottom_toTopOf="@id/edit_description"
@@ -45,7 +45,7 @@
             android:textColor="#000"
             android:textColorHint="#000" tools:layout_editor_absoluteY="288dp" tools:layout_editor_absoluteX="29dp"/>
     <Button
-            android:text="Wybierz godzinę"
+            android:text="@string/default_time"
             android:layout_width="wrap_content"
             app:layout_constrainedHeight="true"
             app:layout_constrainedWidth="true"
