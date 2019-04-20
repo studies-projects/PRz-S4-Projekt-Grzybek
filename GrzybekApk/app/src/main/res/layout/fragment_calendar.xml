@@ -1,11 +1,97 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:animateLayoutChanges="true"
+                                             android:id="@+id/main_content"
+                                             android:layout_marginTop="?actionBarSize"
+>
 
 
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-    android:text="Kalendarz"
-    android:layout_centerInParent="true"/>
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="horizontal"
+            android:id="@+id/navigationCalendar"
+    >
 
-</RelativeLayout>
+        <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/prev_button_layout"
+        >
+            <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="start"
+                    android:layout_margin="2dp"
+                    android:id="@+id/prev_button"
+                    android:background="@drawable/left_arrow" />
+        </FrameLayout>
+
+        <FrameLayout
+                app:layout_constraintEnd_toStartOf="@id/next_button_layout"
+                app:layout_constraintStart_toEndOf="@id/prev_button_layout"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/month_layout">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/month_view"
+                    android:textSize="20sp"
+                    android:textAlignment="center"
+            />
+        </FrameLayout>
+
+        <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/next_button_layout">
+            <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="2dp"
+                    android:id="@+id/next_button"
+                    android:background="@drawable/righ_arrow" />
+        </FrameLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <com.github.sundeepk.compactcalendarview.CompactCalendarView
+            app:layout_constraintTop_toBottomOf="@id/navigationCalendar"
+            app:layout_constraintStart_toStartOf="@id/navigationCalendar"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/compactcalendar_view"
+            android:layout_width="fill_parent"
+            android:layout_height="250dp"
+            app:compactCalendarTargetHeight="250dp"
+            app:compactCalendarTextSize="12sp"
+            app:compactCalendarBackgroundColor="#fff"
+            app:compactCalendarTextColor="#000"
+            app:compactCalendarCurrentSelectedDayBackgroundColor="#ffbd5f5f"
+            app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
+            app:compactCalendarCurrentDayIndicatorStyle="fill_large_indicator"
+            app:compactCalendarEventIndicatorStyle="small_indicator"
+            app:compactCalendarOtherMonthDaysTextColor="#7c6d6f"
+            app:compactCalendarShouldSelectFirstDayOfMonthOnScroll="true"
+    />
+
+    <ListView
+            android:id="@+id/bookings_listview"
+            android:layout_width="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/compactcalendar_view"
+            app:layout_constraintTop_toBottomOf="@id/compactcalendar_view"
+            android:layout_height="wrap_content">
+    </ListView>
+
+</android.support.constraint.ConstraintLayout>
