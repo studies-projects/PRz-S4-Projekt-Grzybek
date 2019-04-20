@@ -1,5 +1,6 @@
 package com.example.grzybekapk.view.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,34 +13,29 @@ import android.view.ViewGroup;
 import android.widget.*;
 
 import com.example.grzybekapk.R;
+import com.example.grzybekapk.view.DataForEvents;
+import com.example.grzybekapk.view.activities.EventDetailsActivity;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class FragCalendar extends Fragment {
 
-    //Zrobienie kalendarza okazało się trudne XD
-
-    private Calendar currentCalender = Calendar.getInstance(Locale.getDefault());
-    private SimpleDateFormat dateFormatForDisplaying = new SimpleDateFormat("dd-M-yyyy hh:mm:ss a", Locale.getDefault());
     private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMM - yyyy", Locale.getDefault());
     private CompactCalendarView compactCalendarView;
     private ActionBar toolbar;
     private TextView showMonthYear;
+    private List<Event> bookingsFromMap = new ArrayList<>();
+    private static List<Event> events = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar,container,false);
 
         final List<String> mutableBookings = new ArrayList<>();
+
 
         final ListView bookingsListView = view.findViewById(R.id.bookings_listview);
         final ImageButton showPreviousMonthBut = view.findViewById(R.id.prev_button);
@@ -54,11 +50,10 @@ public class FragCalendar extends Fragment {
         compactCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
         compactCalendarView.setIsRtl(false);
         compactCalendarView.displayOtherMonthDays(true);
-        loadEvents();
-        loadEventsForYear(2019);
-        compactCalendarView.invalidate();
 
-        logEventsByMonth(compactCalendarView);
+        compactCalendarView.addEvents(events);
+
+        compactCalendarView.invalidate();
 
 
         toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
@@ -66,19 +61,37 @@ public class FragCalendar extends Fragment {
 
         showMonthYear.setText(dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth()));
 
-        //set title on calendar scroll
+        bookingsListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Event evClicked = bookingsFromMap.get(position);
+                DataForEvents data = (DataForEvents) evClicked.getData();
+
+                Intent i = new Intent(getContext(), EventDetailsActivity.class)
+                        .putExtra("name", data.getNameOfEvent())
+                        .putExtra("description", data.getDescriptionOfEvent())
+                        .putExtra("organizer", data.getOrganizer())
+                        .putExtra("date", data.getDateOfEventTxt() + " o godz. " + data.getTimeOfEventTxt());
+                startActivity(i);
+            }
+        });
+
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
-                List<Event> bookingsFromMap = compactCalendarView.getEvents(dateClicked);
+                bookingsFromMap = compactCalendarView.getEvents(dateClicked);
                 if (bookingsFromMap != null) {
                     mutableBookings.clear();
-                    for (Event booking : bookingsFromMap) {
-                        mutableBookings.add((String) booking.getData());
+                    for (Event booking : bookingsFromMap) {                                         //pętla foreach
+                        DataForEvents dt = (DataForEvents) booking.getData();                       // pobranie danych naszego eventu
+                        String message = dt.getTimeOfEventTxt() + " " + dt.getNameOfEvent();
+                        mutableBookings.add(message);
                     }
                     adapter.notifyDataSetChanged();
-                }
+                } // Wyświetlenie wydarzeń w danym dniu
             }
+
+
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
@@ -109,17 +122,19 @@ public class FragCalendar extends Fragment {
             public void onClosed() {
             }
         });
-
-
-        // uncomment below to show indicators above small indicator events
-        //compactCalendarView.shouldDrawIndicatorsBelowSelectedDays(true);
-
-        // uncomment below to open onCreate
-        //openCalendarOnCreate(v);
-
         return view;
     }
 
+
+    //Dwie statyczne funkcje do dodawania wydarzeń w kalendarzu, bierzcie jak swoje
+    public static void createEvent(Calendar date, DataForEvents object){
+        events.add(new Event(Color.rgb(255, 0, 0), date.getTimeInMillis(), object));
+    }
+
+    //Ta się różni tym, że kolor tej kropki można ustawić według uznania
+    public static void createEvent(Calendar date, DataForEvents object, int red, int green, int blue){
+        events.add(new Event(Color.rgb(red, green, blue), date.getTimeInMillis(), object));
+    }
 
     @Override
     public void onResume() {
@@ -127,68 +142,4 @@ public class FragCalendar extends Fragment {
         showMonthYear.setText(dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth()));
     }
 
-    private void loadEvents() {
-        addEvents(Calendar.DECEMBER, -1);
-        addEvents(Calendar.AUGUST, -1);
-    }
-
-    private void loadEventsForYear(int year) {
-        addEvents(Calendar.DECEMBER, year);
-        addEvents(Calendar.AUGUST, year);
-    }
-
-    private void logEventsByMonth(CompactCalendarView compactCalendarView) {
-        currentCalender.setTime(new Date());
-        currentCalender.set(Calendar.DAY_OF_MONTH, 1);
-        currentCalender.set(Calendar.MONTH, Calendar.AUGUST);
-        List<String> dates = new ArrayList<>();
-        for (Event e : compactCalendarView.getEventsForMonth(new Date())) {
-            dates.add(dateFormatForDisplaying.format(e.getTimeInMillis()));
-        }
-    }
-
-    private void addEvents(int month, int year) {
-        currentCalender.setTime(new Date());
-        currentCalender.set(Calendar.DAY_OF_MONTH, 1);
-        Date firstDayOfMonth = currentCalender.getTime();
-        for (int i = 0; i < 6; i++) {
-            currentCalender.setTime(firstDayOfMonth);
-            if (month > -1) {
-                currentCalender.set(Calendar.MONTH, month);
-            }
-            if (year > -1) {
-                currentCalender.set(Calendar.ERA, GregorianCalendar.AD);
-                currentCalender.set(Calendar.YEAR, year);
-            }
-            currentCalender.add(Calendar.DATE, i);
-            setToMidnight(currentCalender);
-            long timeInMillis = currentCalender.getTimeInMillis();
-
-            List<Event> events = getEvents(timeInMillis, i);
-
-            compactCalendarView.addEvents(events);
-        }
-    }
-
-    private List<Event> getEvents(long timeInMillis, int day) {
-        if (day < 2) {
-            return Arrays.asList(new Event(Color.argb(255, 169, 68, 65), timeInMillis, "Event at " + new Date(timeInMillis)));
-        } else if ( day > 2 && day <= 4) {
-            return Arrays.asList(
-                    new Event(Color.argb(255, 169, 68, 65), timeInMillis, "Event at " + new Date(timeInMillis)),
-                    new Event(Color.argb(255, 100, 68, 65), timeInMillis, "Event 2 at " + new Date(timeInMillis)));
-        } else {
-            return Arrays.asList(
-                    new Event(Color.argb(255, 169, 68, 65), timeInMillis, "Event at " + new Date(timeInMillis) ),
-                    new Event(Color.argb(255, 100, 68, 65), timeInMillis, "Event 2 at " + new Date(timeInMillis)),
-                    new Event(Color.argb(255, 70, 68, 65), timeInMillis, "Event 3 at " + new Date(timeInMillis)));
-        }
-    }
-
-    private void setToMidnight(Calendar calendar) {
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-    }
 }
