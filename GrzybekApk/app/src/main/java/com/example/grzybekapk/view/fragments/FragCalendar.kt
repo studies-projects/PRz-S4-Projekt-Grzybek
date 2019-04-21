@@ -24,11 +24,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-
 class FragCalendar : Fragment() {
 
-    private val dateFormatForMonth = SimpleDateFormat("MMM - yyyy", Locale.getDefault())
+    private val dateFormatForMonth = SimpleDateFormat("MMMM - yyyy", Locale.getDefault())
     private var compactCalendarView: CompactCalendarView? = null
     private var toolbar: ActionBar? = null
     private var showMonthYear: TextView? = null
@@ -57,14 +55,12 @@ class FragCalendar : Fragment() {
         toolbar = (activity as AppCompatActivity).supportActionBar
         toolbar!!.title = "Kalendarz"
 
-        showMonthYear!!.text = dateFormatForMonth.format(compactCalendarView!!.firstDayOfCurrentMonth)
-
         val firstDayOfMonth = Calendar.getInstance()
         firstDayOfMonth.time = compactCalendarView!!.firstDayOfCurrentMonth
-
+        // o tu nie działa
         getEvents(firstDayOfMonth)
 
-        compactCalendarView!!.invalidate()
+        showMonthYear!!.text = dateFormatForMonth.format(compactCalendarView!!.firstDayOfCurrentMonth)
 
         bookingsListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             val evClicked = bookingsFromMap!![position]
@@ -96,21 +92,14 @@ class FragCalendar : Fragment() {
 
             override fun onMonthScroll(firstDayOfNewMonth: Date) {
                 showMonthYear!!.text = dateFormatForMonth.format(compactCalendarView!!.firstDayOfCurrentMonth)
+                firstDayOfMonth.time = compactCalendarView!!.firstDayOfCurrentMonth
+
                 getEvents(firstDayOfMonth)
             }
         })
 
-        showPreviousMonthBut.setOnClickListener {
-            compactCalendarView!!.scrollLeft()
-            firstDayOfMonth.add(Calendar.MONTH,-1)
-
-        }
-        showNextMonthBut.setOnClickListener {
-            compactCalendarView!!.scrollRight()
-            firstDayOfMonth.add(Calendar.MONTH,1)
-
-        }
-
+        showPreviousMonthBut.setOnClickListener { compactCalendarView!!.scrollLeft() }
+        showNextMonthBut.setOnClickListener { compactCalendarView!!.scrollRight() }
 
         compactCalendarView!!.setAnimationListener(object : CompactCalendarView.CompactCalendarAnimationListener {
             override fun onOpened() {}
@@ -127,11 +116,15 @@ class FragCalendar : Fragment() {
 
     fun getEvents(firstDayOfMonth: Calendar){
         compactCalendarView!!.removeAllEvents()
-        val lastDayOfMonth = Calendar.getInstance()
-        lastDayOfMonth.add(Calendar.MONTH,1)
-        lastDayOfMonth.set(Calendar.HOUR,23)
-        lastDayOfMonth.set(Calendar.MINUTE,59)
-        lastDayOfMonth.set(Calendar.SECOND,59)
+        firstDayOfMonth.add(Calendar.MONTH,-1)
+        var lastDayOfMonth = Calendar.getInstance()
+        lastDayOfMonth.set(Calendar.YEAR,firstDayOfMonth.get(Calendar.YEAR))
+        lastDayOfMonth.set(Calendar.MONTH,firstDayOfMonth.get(Calendar.MONTH)+3)
+        lastDayOfMonth.set(Calendar.DAY_OF_MONTH,1)
+        lastDayOfMonth.set(Calendar.HOUR,0)
+        lastDayOfMonth.set(Calendar.MINUTE,0)
+        lastDayOfMonth.set(Calendar.SECOND,0)
+        lastDayOfMonth.set(Calendar.MILLISECOND,0)
 
         db.collection("Events")
             .whereGreaterThanOrEqualTo("DateStart",Timestamp(firstDayOfMonth.time))
@@ -154,6 +147,7 @@ class FragCalendar : Fragment() {
                 Log.w(TAG, "Error getting documents: ", exception)
             }
         compactCalendarView!!.addEvents(events)
+        events.clear()
     }
 
     companion object {
@@ -169,7 +163,4 @@ class FragCalendar : Fragment() {
             events.add(Event(Color.rgb(red, green, blue), date.timeInMillis, `object`))
         }
     }
-
-
-
 }

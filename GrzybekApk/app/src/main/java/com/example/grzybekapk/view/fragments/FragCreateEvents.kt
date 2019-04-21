@@ -85,7 +85,7 @@ class FragCreateEvents: Fragment(){
                     && timePickerButton.text != resources.getString(R.string.default_time)
                     && name != "") {
 
-                    FragCalendar.createEvent(date, DataForEvents(name, description, date, "Mateusz"))
+                   // FragCalendar.createEvent(date, DataForEvents(name, description, date, "Mateusz"))
                     Toast.makeText(activity, "Utworzono wydarzenie", Toast.LENGTH_LONG).show()
 
                 } else {
