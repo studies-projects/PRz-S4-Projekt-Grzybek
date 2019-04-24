@@ -5,6 +5,8 @@
     <string name="menu_moje_wydarzenia">Moje wydarzenia</string>
     <string name="menu_utworz_wydarzenie">Utwórz wydarzenie</string>
     <string name="menu_kalendarz">Kalendarz</string>
+    <string name="default_date">Wybierz datę</string>
+    <string name="default_time">Wybierz godzinę</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
