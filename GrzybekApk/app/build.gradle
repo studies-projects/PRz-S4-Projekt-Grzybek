@@ -46,6 +46,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:18.2.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
     implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
+        transitive = true
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'
