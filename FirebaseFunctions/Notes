@@ -4,6 +4,7 @@ Jak to powinno wyglądać
             OK:
                 Pobiera swoje dane z WebView w 64base
                 Wysyła dane na serwer
+                    https://blog.jakelee.co.uk/developing-android-apps-with-firebase-cloud-functions/
                 Odbiera token do logowania z serwera
             !OK:
                 Error
@@ -11,6 +12,7 @@ Jak to powinno wyglądać
     Server
         Odbiera zakodowaną odpowiedź
         Dodaje usera do bazy
+            https://github.com/firebase/functions-samples/blob/master/linkedin-auth/functions/index.js
         Wysyła token do logowania
         
 
