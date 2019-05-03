@@ -4,7 +4,7 @@ var serviceAccount = require("./prz-grzybek-firebase-adminsdk-wo9xo-42fa0b73f7.j
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     //credential: admin.credential.applicationDefault(),
-    databaseURL: "https://prz-grzybek.firebaseio.com"
+    //databaseURL: "https://prz-grzybek.firebaseio.com"
 });
 
 exports.getCustomToken = functions.https.onRequest((req, res) => {
@@ -45,12 +45,14 @@ async function createFirebaseAccountCAS(userJSON) {
         throw error;
     });
 
+    // Information about user which can't be put into admin.auth()
     var aditionalInfo = {
         usos_id: ref["cas:attributes"]["cas:usos_id"]["_text"],
         departmentnumber: ref["cas:attributes"]["cas:departmentnumber"]["_text"],
         employeetype: ref["cas:attributes"]["cas:employeetype"]["_text"]
     };
 
+    // Adding additional information to datebase
     const databaseTask = admin.firestore().doc(`/Users/${uid}`).set(aditionalInfo);    
 
     // Wait for all async task to complete then generate and return a custom auth token.

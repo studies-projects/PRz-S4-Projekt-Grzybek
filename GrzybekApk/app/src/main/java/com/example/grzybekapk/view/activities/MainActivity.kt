@@ -11,8 +11,8 @@ import com.example.grzybekapk.R
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.functions.FirebaseFunctions
-import com.crashlytics.android.Crashlytics;
-import io.fabric.sdk.android.Fabric;
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,35 +32,9 @@ class MainActivity : AppCompatActivity() {
     fun onClickLogIn(v : View){
         Log.d("CHECKPOINT", "Onclick RUN!")
 
-
-        /*functions = FirebaseFunctions.getInstance()
-        //functions.useFunctionsEmulator("http://192.168.0.20:5000")
-
-        *//*var text:String = "test"
-        val data = hashMapOf(
-            "text" to text,
-            "push" to true
-        )*//*
-
-
-        functions
-        //FirebaseFunctions.getInstance()
-            .getHttpsCallable("test")
-            .call(hashMapOf("manufacturer" to Build.MANUFACTURER))
-            .continueWith { task ->
-                if (task.isSuccessful) {
-                    //Toast.makeText(activity, "Upppercase manufacturer is: ${task.result!!.data}", Toast.LENGTH_SHORT).show()
-                    Log.d("RESPONSE", "Upppercase manufacturer is: ${task.result!!.data}")
-                } else {
-                    Log.d("FAILED", task.exception.toString())
-                }
-            }
-        *//*val intent = Intent(this, MainScreen::class.java)
-        startActivity(intent)*/
-
-//https://github.com/firebase/quickstart-android/blob/master/auth/app/src/main/java/com/google/firebase/quickstart/auth/kotlin/CustomAuthActivity.kt
+        //https://github.com/firebase/quickstart-android/blob/master/auth/app/src/main/java/com/google/firebase/quickstart/auth/kotlin/CustomAuthActivity.kt
         functions = FirebaseFunctions.getInstance()
-        functions.useFunctionsEmulator("http://192.168.0.20:5000")
+        //functions.useFunctionsEmulator("http://192.168.0.20:5000")
         functions
             .getHttpsCallable("test")
             .call(/*hashMapOf("manufacturer" to Build.MANUFACTURER)*/)
@@ -85,5 +59,9 @@ class MainActivity : AppCompatActivity() {
             }
         Log.d("CHECKPOINT", "Onclick DONE!")
     }
+
+
+    /*val intent = Intent(this, MainScreen::class.java)
+    startActivity(intent)*/
 
 }

@@ -69,3 +69,8 @@ Baza Wiedzy:
 
 TODO:
     Zwróć ID do Androida w celu zalogowania
+
+
+    Firebase:
+        firebase deploy --only functions
+        firebase serve --only functions --host 0.0.0.0
