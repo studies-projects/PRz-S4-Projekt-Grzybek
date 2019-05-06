@@ -20,5 +20,9 @@
                 android:icon="@drawable/ic_launcher_foreground"
                 android:id="@+id/calendar_but"
                 android:title="@string/menu_kalendarz"/>
+        <item
+                android:icon="@drawable/ic_launcher_foreground"
+                android:id="@+id/log_out"
+                android:title="@string/log_out"/>
     </group>
 </menu>

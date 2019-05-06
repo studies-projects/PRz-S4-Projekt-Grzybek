@@ -13,7 +13,8 @@ import com.crashlytics.android.Crashlytics
 import com.google.firebase.auth.FirebaseUser
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONObject
+import android.widget.Toast
+import android.os.Handler
 
 private lateinit var functions: FirebaseFunctions
 private lateinit var mAuth: FirebaseAuth
@@ -22,6 +23,8 @@ private const val CASurl = "https://cas.prz.edu.pl/cas-server/login?service=http
 private var currentUser : FirebaseUser? = null
 
 class MainActivity : AppCompatActivity() {
+
+    private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +77,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            finishAffinity()
+        }
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, "Wciśnij jeszcze raz żeby wyjść.", Toast.LENGTH_SHORT).show()
+        Handler().postDelayed( {
+            doubleBackToExitPressedOnce = false
+        }, 2000)
+    }
+
     fun onClickLogIn(v: View) {
         logIn.visibility = View.GONE
         web_view.loadUrl(CASurl)
@@ -95,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                     mAuth.signInWithCustomToken(result)
                         .addOnCompleteListener() { t ->
                             if (t.isSuccessful) {
-                                //Log.d("SignIN", "Signed")
+                                Log.d("SignIN", "Signed")
                                 val intent = Intent(this, MainScreen::class.java)
                                 startActivity(intent)
                             } else {
