@@ -2,19 +2,15 @@ const functions = require('firebase-functions');
 var admin = require('firebase-admin');
 var serviceAccount = require("./prz-grzybek-firebase-adminsdk-wo9xo-42fa0b73f7.json");
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    //credential: admin.credential.applicationDefault(),
-    //databaseURL: "https://prz-grzybek.firebaseio.com"
+    credential: admin.credential.cert(serviceAccount)
 });
 
-exports.getCustomToken = functions.https.onRequest((req, res) => {
-    res.send("TEST123");
-});
+exports.getCustomToken = functions.https.onCall(data => {
+    // Read 64base from APP
+    var base64FromApp = data.response;
+    console.log("Data from APP:", JSON.stringify(data));
 
-exports.test = functions.https.onCall((data) => {
-    var my64base = 'CgoKCjxjYXM6c2VydmljZVJlc3BvbnNlIHhtbG5zOmNhcz0naHR0cDovL3d3dy55YWxlLmVkdS90cC9jYXMnPgoJPGNhczphdXRoZW50aWNhdGlvblN1Y2Nlc3M+CgkJPGNhczp1c2VyPjE1ODg0MUBzdHVkLnByei5lZHUucGw8L2Nhczp1c2VyPgoJCQoJPGNhczphdHRyaWJ1dGVzPgoJICAKCSAgICAgIAoJCSAgPGNhczp1aWQ+MTU4ODQxPC9jYXM6dWlkPgoJICAgICAgCgkJICA8Y2FzOm1haWw+MTU4ODQxQHN0dWQucHJ6LmVkdS5wbDwvY2FzOm1haWw+CgkgICAgICAKCQkgIDxjYXM6dXNvc19pZD4yMjUzMjg8L2Nhczp1c29zX2lkPgoJICAgICAgCgkJICA8Y2FzOmVtcGxveWVldHlwZT5zdHVkZW50PC9jYXM6ZW1wbG95ZWV0eXBlPgoJICAgICAgCgkJICA8Y2FzOnJlZ2lzdGVyZWRhZGRyZXNzPjE1ODg0MUBzdHVkLnByei5lZHUucGw8L2NhczpyZWdpc3RlcmVkYWRkcmVzcz4KCSAgICAgIAoJCSAgPGNhczpkZXBhcnRtZW50bnVtYmVyPkVGPC9jYXM6ZGVwYXJ0bWVudG51bWJlcj4KCSAgICAgIAoJICAKCTwvY2FzOmF0dHJpYnV0ZXM+CgogICAgICAgIAogICAgICAgIAoJPC9jYXM6YXV0aGVudGljYXRpb25TdWNjZXNzPgo8L2NhczpzZXJ2aWNlUmVzcG9uc2U+';
-    const myJSON = baseToJSON(my64base);
-
+    const myJSON = baseToJSON(base64FromApp);
     return createFirebaseAccountCAS(myJSON);
 });
 

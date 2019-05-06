@@ -13,6 +13,7 @@ import com.crashlytics.android.Crashlytics
 import com.google.firebase.auth.FirebaseUser
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONObject
 
 private lateinit var functions: FirebaseFunctions
 private lateinit var mAuth: FirebaseAuth
@@ -80,19 +81,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun login(response: String) {
+        val data = hashMapOf(
+            "response" to "${response}"
+        )
 
-        //https://github.com/firebase/quickstart-android/blob/master/auth/app/src/main/java/com/google/firebase/quickstart/auth/kotlin/CustomAuthActivity.kt
         functions = FirebaseFunctions.getInstance()
         functions
-            .getHttpsCallable("test")
-            .call(/*hashMapOf("manufacturer" to Build.MANUFACTURER)*/)
+            .getHttpsCallable("getCustomToken")
+            .call(data)
             .continueWith { task ->
                 if (task.isSuccessful) {
                     val result = task.result?.data as String
                     mAuth.signInWithCustomToken(result)
                         .addOnCompleteListener() { t ->
                             if (t.isSuccessful) {
-                                Log.d("SignIN", "Signed")
+                                //Log.d("SignIN", "Signed")
                                 val intent = Intent(this, MainScreen::class.java)
                                 startActivity(intent)
                             } else {
