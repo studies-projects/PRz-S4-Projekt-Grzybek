@@ -1,6 +1,7 @@
 package com.example.grzybekapk.view.activities
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.Toast
 import android.os.Handler
+import android.webkit.WebView
 
 private lateinit var functions: FirebaseFunctions
 private lateinit var mAuth: FirebaseAuth
@@ -67,7 +69,6 @@ class MainActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         currentUser = mAuth.currentUser
-
         //Check if user is logged in
         if (currentUser != null) {
             val intent = Intent(this, MainScreen::class.java)
@@ -125,15 +126,20 @@ class MainActivity : AppCompatActivity() {
 
 class URLInterceptor : WebViewClient() {
 
-    override fun onPageFinished(view: WebView?, url: String?) {
-        super.onPageFinished(view, url)
+    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+        super.onPageStarted(view, url, favicon)
 
-        if (url!!.contains("http://www.mpenar.kia.prz.edu.pl/?response=")) {
+        if (url!!.contains("www.mpenar.kia.prz.edu.pl/?response=")) {
             Log.d("OVERRIDE", "TRUE")
             tryLoginUser(view, url)
         }
 
         Log.d("OVERRIDE", "false")
+    }
+
+    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+        var url = request.url.toString()
+        return !url!!.contains("mpenar")
     }
 
     private fun checkAccess(url: String) : Boolean{
