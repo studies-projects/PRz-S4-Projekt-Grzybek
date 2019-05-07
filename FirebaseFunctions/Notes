@@ -1,0 +1,76 @@
+Jak to powinno wyglądać
+    Android
+        Logowanie przez WebView
+            OK:
+                Pobiera swoje dane z WebView w 64base
+                Wysyła dane na serwer
+                    https://blog.jakelee.co.uk/developing-android-apps-with-firebase-cloud-functions/
+                Odbiera token do logowania z serwera
+            !OK:
+                Error
+
+    Server
+        Odbiera zakodowaną odpowiedź
+        Dodaje usera do bazy
+            https://github.com/firebase/functions-samples/blob/master/linkedin-auth/functions/index.js
+        Wysyła token do logowania
+        
+
+Penar PROXY CAS
+    http://www.mpenar.kia.prz.edu.pl/casproxy.php?redirect=http://marcin.pazowski.pl&key=ed5fddea-9be9-4955-9718-fb429fed17f9
+    https://cas.prz.edu.pl/cas-server/login?service=http://www.mpenar.kia.prz.edu.pl/casproxy.php?redirect=http://www.marcin.pazowski.pl&key=ed5fddea-9be9-4955-9718-fb429fed17f9
+
+    Marcin Pazowski 64BASE:
+        Forbiden
+            CgoKPGNhczpzZXJ2aWNlUmVzcG9uc2UgeG1sbnM6Y2FzPSdodHRwOi8vd3d3LnlhbGUuZWR1L3RwL2Nhcyc+Cgk8Y2FzOmF1dGhlbnRpY2F0aW9uRmFpbHVyZSBjb2RlPSdJTlZBTElEX1RJQ0tFVCc+CgkJbmllem5hbmEgcG9zdGHEhyBiaWxldHUgJiMwMzk7JiMwMzk7Cgk8L2NhczphdXRoZW50aWNhdGlvbkZhaWx1cmU+CjwvY2FzOnNlcnZpY2VSZXNwb25zZT4=
+        OK:
+            CgoKCjxjYXM6c2VydmljZVJlc3BvbnNlIHhtbG5zOmNhcz0naHR0cDovL3d3dy55YWxlLmVkdS90cC9jYXMnPgoJPGNhczphdXRoZW50aWNhdGlvblN1Y2Nlc3M+CgkJPGNhczp1c2VyPjE1ODg0MUBzdHVkLnByei5lZHUucGw8L2Nhczp1c2VyPgoJCQoJPGNhczphdHRyaWJ1dGVzPgoJICAKCSAgICAgIAoJCSAgPGNhczp1aWQ+MTU4ODQxPC9jYXM6dWlkPgoJICAgICAgCgkJICA8Y2FzOm1haWw+MTU4ODQxQHN0dWQucHJ6LmVkdS5wbDwvY2FzOm1haWw+CgkgICAgICAKCQkgIDxjYXM6dXNvc19pZD4yMjUzMjg8L2Nhczp1c29zX2lkPgoJICAgICAgCgkJICA8Y2FzOmVtcGxveWVldHlwZT5zdHVkZW50PC9jYXM6ZW1wbG95ZWV0eXBlPgoJICAgICAgCgkJICA8Y2FzOnJlZ2lzdGVyZWRhZGRyZXNzPjE1ODg0MUBzdHVkLnByei5lZHUucGw8L2NhczpyZWdpc3RlcmVkYWRkcmVzcz4KCSAgICAgIAoJCSAgPGNhczpkZXBhcnRtZW50bnVtYmVyPkVGPC9jYXM6ZGVwYXJ0bWVudG51bWJlcj4KCSAgICAgIAoJICAKCTwvY2FzOmF0dHJpYnV0ZXM+CgogICAgICAgIAogICAgICAgIAoJPC9jYXM6YXV0aGVudGljYXRpb25TdWNjZXNzPgo8L2NhczpzZXJ2aWNlUmVzcG9uc2U+
+
+
+
+
+<cas:serviceResponse xmlns:cas='http://www.yale.edu/tp/cas'>
+	<cas:authenticationSuccess>
+		<cas:user>158841@stud.prz.edu.pl</cas:user>
+		
+	<cas:attributes>
+	  
+	      
+		  <cas:uid>158841</cas:uid>
+	      
+		  <cas:mail>158841@stud.prz.edu.pl</cas:mail>
+	      
+		  <cas:usos_id>225328</cas:usos_id>
+	      
+		  <cas:employeetype>student</cas:employeetype>
+	      
+		  <cas:registeredaddress>158841@stud.prz.edu.pl</cas:registeredaddress>
+	      
+		  <cas:departmentnumber>EF</cas:departmentnumber>
+	      
+	  
+	</cas:attributes>
+
+        
+        
+	</cas:authenticationSuccess>
+</cas:serviceResponse>
+
+
+
+
+
+Baza Wiedzy:
+    Firebase Functions GetStarted:
+        https://firebase.google.com/docs/functions/get-started
+
+    Add Firebase to Android APP
+        https://firebase.google.com/docs/android/setup
+
+TODO:
+    Zwróć ID do Androida w celu zalogowania
+
+
+    Firebase:
+        firebase deploy --only functions
+        firebase serve --only functions --host 0.0.0.0

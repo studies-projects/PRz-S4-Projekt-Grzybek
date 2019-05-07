@@ -7,7 +7,6 @@
         tools:context=".view.activities.MainActivity">
 
 
-
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -16,6 +15,11 @@
                 android:text="@string/log_button"
                 android:layout_centerInParent="true"
                 android:onClick="onClickLogIn"
-                android:background="@drawable/login_button_states"/>
+                android:background="@drawable/login_button_states" android:visibility="invisible"/>
+        <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:visibility="invisible">
+        </WebView>
 
 </RelativeLayout>

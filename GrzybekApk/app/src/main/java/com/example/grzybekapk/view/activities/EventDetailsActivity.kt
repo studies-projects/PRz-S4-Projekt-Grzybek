@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import com.example.grzybekapk.R
-import kotlinx.android.synthetic.main.activity_event_details.*
 
 class EventDetailsActivity : AppCompatActivity() {
 

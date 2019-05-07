@@ -1,7 +1,9 @@
 package com.example.grzybekapk.view.activities
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.widget.Toolbar
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -9,16 +11,20 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.example.grzybekapk.R
 import com.example.grzybekapk.view.fragments.FragCalendar
 import com.example.grzybekapk.view.fragments.FragStartScreen
 import com.example.grzybekapk.view.fragments.FragMyEvents
 import com.example.grzybekapk.view.fragments.FragCreateEvents
+import com.google.firebase.auth.FirebaseAuth
 
 class MainScreen : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
+    private var doubleBackToExitPressedOnce = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +55,9 @@ class MainScreen : AppCompatActivity() {
                     R.id.calendar_but ->{
                         fragment = FragCalendar()
                     }
+                    R.id.log_out ->{
+                        logout()
+                    }
                 }
                                                                                 // Replacing fragments
             if(fragment!=null) {
@@ -61,7 +70,6 @@ class MainScreen : AppCompatActivity() {
 
                 drawerLayout.closeDrawers()                                     // Closing pull-out menu
                 true
-
         }
         if (savedInstanceState == null) {
             navigationView.setCheckedItem(R.id.main_screen)                    // On the beginning "EkranGłówny" is checked
@@ -72,8 +80,17 @@ class MainScreen : AppCompatActivity() {
             transaction.replace(R.id.frameLay, fragStartScreen)               // Replacement
                 .commit()                                                       // Commit of your changes
         }
+    }
 
-
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            finishAffinity()
+        }
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, "Wciśnij jeszcze raz żeby wyjść.", Toast.LENGTH_SHORT).show()
+        Handler().postDelayed( {
+            doubleBackToExitPressedOnce = false
+        }, 2000)
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {   // Strange construction
@@ -94,6 +111,9 @@ class MainScreen : AppCompatActivity() {
         navigationView.setCheckedItem(R.id.create_event)
     }
 
-
-
+    fun logout(){
+        FirebaseAuth.getInstance().signOut()
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
 }
