@@ -15,7 +15,7 @@
                 android:text="@string/log_button"
                 android:layout_centerInParent="true"
                 android:onClick="onClickLogIn"
-                android:background="@drawable/login_button_states" android:visibility="visible"/>
+                android:background="@drawable/login_button_states" android:visibility="invisible"/>
         <WebView
                 android:id="@+id/web_view"
                 android:layout_width="match_parent"

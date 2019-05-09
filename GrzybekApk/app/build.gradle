@@ -49,6 +49,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
         transitive = true
     }
+    implementation files('libs/jsoup-1.11.3.jar')
 }
 
 apply plugin: 'com.google.gms.google-services'
