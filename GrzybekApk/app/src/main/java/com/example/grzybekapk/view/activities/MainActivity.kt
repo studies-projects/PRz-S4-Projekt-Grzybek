@@ -148,6 +148,8 @@ class URLInterceptor : WebViewClient() {
 
     override fun onPageFinished(view: WebView, url: String) {
         /* This call inject JavaScript into the page which just finished loading. */
+        Log.d("onPageFinished", url)
+        if (url!!.contains("www.mpenar.kia.prz.edu.pl/casproxy.php?redirect=http://www.mpenar.kia.prz.edu.pl&key=ed5fddea-9be9-4955-9718-fb429fed17f9&ticket="))
         view.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');")
     }
 
@@ -188,6 +190,7 @@ internal class MyJavaScriptInterface {
     fun processHTML(html: String) {
        var document = Jsoup.parse(html)
         val divs = document.select("div")
+        Log.d("processHTML", divs[0].ownText())
         tryLoginUser(webview,divs[0].ownText())
     }
 
