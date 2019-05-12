@@ -171,14 +171,13 @@ class URLInterceptor : WebViewClient() {
 
     private fun tryLoginUser(view: WebView?, url: String) {
         if (checkAccess(url)){
+            view!!.visibility = View.GONE
             main.login(getResponse(url))
             Log.d("LOGIN", getResponse(url))
-            view!!.visibility = View.GONE
         }else{
             view!!.loadUrl(CASurl)
         }
     }
-}
 }
 
 internal class MyJavaScriptInterface {
