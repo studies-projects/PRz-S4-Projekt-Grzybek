@@ -135,22 +135,16 @@ class URLInterceptor : WebViewClient() {
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
-
         Log.d("onPageStarted", url)
-
-        if (url!!.contains("www.mpenar.kia.prz.edu.pl/?response=")) {
-            Log.d("OVERRIDE", "TRUE")
-            tryLoginUser(view, url)
-        }
-
-        Log.d("OVERRIDE", "false")
     }
 
     override fun onPageFinished(view: WebView, url: String) {
         /* This call inject JavaScript into the page which just finished loading. */
         Log.d("onPageFinished", url)
-        if (url!!.contains("www.mpenar.kia.prz.edu.pl/casproxy.php?redirect=http://www.mpenar.kia.prz.edu.pl&key=ed5fddea-9be9-4955-9718-fb429fed17f9&ticket="))
-        view.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');")
+        if (url!!.contains("www.mpenar.kia.prz.edu.pl/casproxy.php?redirect=http://www.mpenar.kia.prz.edu.pl&key=ed5fddea-9be9-4955-9718-fb429fed17f9&ticket=")){
+            view.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');")
+            view.visibility = View.GONE
+        }
     }
 
     @Suppress("OverridingDeprecatedMember")
@@ -163,24 +157,6 @@ class URLInterceptor : WebViewClient() {
         val url = request.url.toString()
         Log.d("shouldOverrideLoading", url)
         return !url.contains("mpenar")
-    }
-
-    private fun checkAccess(url: String) : Boolean{
-        return !url.contains("Access%20Forbidden")
-    }
-
-    private fun getResponse(url: String) : String {
-        return url.substringAfter("response=")
-    }
-
-    private fun tryLoginUser(view: WebView?, url: String) {
-        if (checkAccess(url)){
-            main.login(getResponse(url))
-            Log.d("LOGIN", getResponse(url))
-            view!!.visibility = View.GONE
-        }else{
-            view!!.loadUrl(CASurl)
-        }
     }
 }
 
@@ -205,9 +181,9 @@ internal class MyJavaScriptInterface {
     private fun tryLoginUser(view: WebView?, div: String) {
         if (checkAccess(div)){
             main.login(getResponse(div))
-            Log.d("LOGIN", getResponse(div))
-            view!!.visibility = View.GONE
+            Log.d("LOGIN_JS", getResponse(div))
         }else{
+            view!!.visibility = View.VISIBLE
             view!!.loadUrl(CASurl)
         }
     }
