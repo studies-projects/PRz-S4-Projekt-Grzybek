@@ -136,6 +136,9 @@ class URLInterceptor : WebViewClient() {
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
         Log.d("onPageStarted", url)
+        if (url!!.contains("www.mpenar.kia.prz.edu.pl/?response=")) {
+            tryLoginUser(view, url)
+        }
     }
 
     override fun onPageFinished(view: WebView, url: String) {
@@ -158,6 +161,24 @@ class URLInterceptor : WebViewClient() {
         Log.d("shouldOverrideLoading", url)
         return !url.contains("mpenar")
     }
+    private fun checkAccess(url: String) : Boolean{
+        return !url.contains("Access%20Forbidden")
+    }
+
+    private fun getResponse(url: String) : String {
+        return url.substringAfter("response=")
+    }
+
+    private fun tryLoginUser(view: WebView?, url: String) {
+        if (checkAccess(url)){
+            main.login(getResponse(url))
+            Log.d("LOGIN", getResponse(url))
+            view!!.visibility = View.GONE
+        }else{
+            view!!.loadUrl(CASurl)
+        }
+    }
+}
 }
 
 internal class MyJavaScriptInterface {
