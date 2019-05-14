@@ -17,10 +17,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.Toast
 import android.os.Handler
 import android.webkit.WebView
+import android.webkit.JavascriptInterface
+import org.jsoup.Jsoup
 
 private lateinit var functions: FirebaseFunctions
 private lateinit var mAuth: FirebaseAuth
 private lateinit var main : MainActivity
+private var webview: WebView? = null
 private const val CASurl = "https://cas.prz.edu.pl/cas-server/login?service=http%3A%2F%2Fwww.mpenar.kia.prz.edu.pl%2Fcasproxy.php%3Fredirect%3Dhttp%3A%2F%2Fwww.mpenar.kia.prz.edu.pl%26key%3Ded5fddea-9be9-4955-9718-fb429fed17f9"
 private var currentUser : FirebaseUser? = null
 
@@ -35,6 +38,8 @@ class MainActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
 
         main = this
+
+        webview = web_view
 
         // Get the web view settings instance
         val settings = web_view.settings
@@ -62,6 +67,8 @@ class MainActivity : AppCompatActivity() {
 
         val client = URLInterceptor()
         web_view.webViewClient = client
+
+        web_view.addJavascriptInterface( MyJavaScriptInterface(), "HTMLOUT");
 
         web_view.visibility = View.GONE
     }
@@ -97,7 +104,7 @@ class MainActivity : AppCompatActivity() {
 
     fun login(response: String) {
         val data = hashMapOf(
-            "response" to "${response}"
+            "response" to response
         )
 
         functions = FirebaseFunctions.getInstance()
@@ -128,20 +135,32 @@ class URLInterceptor : WebViewClient() {
 
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
-
+        Log.d("onPageStarted", url)
         if (url!!.contains("www.mpenar.kia.prz.edu.pl/?response=")) {
-            Log.d("OVERRIDE", "TRUE")
             tryLoginUser(view, url)
         }
+    }
 
-        Log.d("OVERRIDE", "false")
+    override fun onPageFinished(view: WebView, url: String) {
+        /* This call inject JavaScript into the page which just finished loading. */
+        Log.d("onPageFinished", url)
+        if (url!!.contains("www.mpenar.kia.prz.edu.pl/casproxy.php?redirect=http://www.mpenar.kia.prz.edu.pl&key=ed5fddea-9be9-4955-9718-fb429fed17f9&ticket=")){
+            view.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');")
+            view.visibility = View.GONE
+        }
+    }
+
+    @Suppress("OverridingDeprecatedMember")
+    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+        Log.d("shouldOverrideLoadDepre", url)
+        return !url.contains("mpenar")
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-        var url = request.url.toString()
-        return !url!!.contains("mpenar")
+        val url = request.url.toString()
+        Log.d("shouldOverrideLoading", url)
+        return !url.contains("mpenar")
     }
-
     private fun checkAccess(url: String) : Boolean{
         return !url.contains("Access%20Forbidden")
     }
@@ -152,10 +171,39 @@ class URLInterceptor : WebViewClient() {
 
     private fun tryLoginUser(view: WebView?, url: String) {
         if (checkAccess(url)){
+            view!!.visibility = View.GONE
             main.login(getResponse(url))
             Log.d("LOGIN", getResponse(url))
-            view!!.visibility = View.GONE
         }else{
+            view!!.loadUrl(CASurl)
+        }
+    }
+}
+
+internal class MyJavaScriptInterface {
+
+    @JavascriptInterface
+    fun processHTML(html: String) {
+       var document = Jsoup.parse(html)
+        val divs = document.select("div")
+        Log.d("processHTML", divs[0].ownText())
+        tryLoginUser(webview,divs[0].ownText())
+    }
+
+    private fun checkAccess(div: String) : Boolean{
+        return !div.contains("Access%20Forbidden")
+    }
+
+    private fun getResponse(div: String) : String {
+        return div.substringAfter("response=")
+    }
+
+    private fun tryLoginUser(view: WebView?, div: String) {
+        if (checkAccess(div)){
+            main.login(getResponse(div))
+            Log.d("LOGIN_JS", getResponse(div))
+        }else{
+            view!!.visibility = View.VISIBLE
             view!!.loadUrl(CASurl)
         }
     }
