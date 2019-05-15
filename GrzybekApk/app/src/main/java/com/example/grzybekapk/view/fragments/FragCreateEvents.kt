@@ -18,6 +18,7 @@ import java.util.*
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.Timestamp
 
 class FragCreateEvents: Fragment(){
 
@@ -30,7 +31,11 @@ class FragCreateEvents: Fragment(){
     private lateinit var tpd: TimePickerDialog
     private lateinit var date: Calendar
     val db = FirebaseFirestore.getInstance()
-
+    private var day: Int = 0
+    private var month: Int = 0
+    private var year: Int = 0
+    private var hour: Int = 0
+    private var minute: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -50,9 +55,9 @@ class FragCreateEvents: Fragment(){
                 if(!::date.isInitialized) {
                     date = Calendar.getInstance()
                 }
-                var day: Int = date.get(Calendar.DAY_OF_MONTH)
-                var month: Int = date.get(Calendar.MONTH)
-                var year: Int = date.get(Calendar.YEAR)
+                day = date.get(Calendar.DAY_OF_MONTH)
+                month = date.get(Calendar.MONTH)
+                year = date.get(Calendar.YEAR)
 
                 dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, nYear, nMonth, nDay ->
                     date.set(nYear, nMonth, nDay)
@@ -68,8 +73,8 @@ class FragCreateEvents: Fragment(){
                 if(!::date.isInitialized) {
                     date = Calendar.getInstance()
                 }
-                var hour = date.get(Calendar.HOUR_OF_DAY)
-                var minute = date.get(Calendar.MINUTE)
+                hour = date.get(Calendar.HOUR_OF_DAY)
+                minute = date.get(Calendar.MINUTE)
 
                 tpd = TimePickerDialog(activity, TimePickerDialog.OnTimeSetListener{view, nHour, nMinute ->
                     date.set(Calendar.HOUR_OF_DAY, nHour)
@@ -93,11 +98,14 @@ class FragCreateEvents: Fragment(){
 
                    // FragCalendar.createEvent(date, DataForEvents(name, description, date, "Mateusz"))
                   //wysylanko do bazy
+
+                  //  var dateStr: String = "$day/$month/$year $hour:$minute:00"
+                 //   var dateEpoch: Long = java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(dateStr).getTime() / 1000
                     val items = HashMap<String, Any>()
-                    items.put("DateStart", date)
+                    items.put("DateStart", Timestamp(date.time))
                     items.put("Desc", description)
                     items.put("Name", name)
-                    items.put("Owner", FirebaseAuth.getInstance().currentUser.toString())
+                    items.put("Owner", FirebaseAuth.getInstance().currentUser!!.uid)
 
                     db.collection("Events").document().set(items).addOnSuccessListener {
                         Toast.makeText(activity, "Utworzono wydarzenie", Toast.LENGTH_LONG).show()
