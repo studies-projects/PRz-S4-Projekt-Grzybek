@@ -15,7 +15,9 @@ import com.example.grzybekapk.view.DataForEvents
 import kotlinx.android.synthetic.main.fragment_create_event.*
 import java.text.SimpleDateFormat
 import java.util.*
-
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.FirebaseAuth
 
 class FragCreateEvents: Fragment(){
 
@@ -27,6 +29,7 @@ class FragCreateEvents: Fragment(){
     private lateinit var dpd: DatePickerDialog
     private lateinit var tpd: TimePickerDialog
     private lateinit var date: Calendar
+    lateinit var db: DocumentReference
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -38,6 +41,7 @@ class FragCreateEvents: Fragment(){
         descrEdTxt = view.findViewById(R.id.edit_description) as EditText
         titleEdTxt = view.findViewById(R.id.edit_title) as EditText
 
+        db = FirebaseFirestore.getInstance().document("Events/xD")
 
         datePickerButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
@@ -86,7 +90,19 @@ class FragCreateEvents: Fragment(){
                     && name != "") {
 
                    // FragCalendar.createEvent(date, DataForEvents(name, description, date, "Mateusz"))
-                    Toast.makeText(activity, "Utworzono wydarzenie", Toast.LENGTH_LONG).show()
+                  //wysylanko do bazy
+                    val items = HashMap<String, Any>()
+                    items.put("DateStart", date)
+                    items.put("Desc", description)
+                    items.put("Name", name)
+                    items.put("Owner", FirebaseAuth.getInstance().currentUser.toString())
+
+                    db.collection("Events").document("xD").set(items).addOnSuccessListener {
+                        Toast.makeText(activity, "Utworzono wydarzenie", Toast.LENGTH_LONG).show()
+                    }
+
+
+
 
                 } else {
                     Toast.makeText(activity, "Nie wybrano daty, godziny lub nazwy", Toast.LENGTH_LONG).show()
