@@ -29,7 +29,8 @@ class FragCreateEvents: Fragment(){
     private lateinit var dpd: DatePickerDialog
     private lateinit var tpd: TimePickerDialog
     private lateinit var date: Calendar
-    lateinit var db: DocumentReference
+    val db = FirebaseFirestore.getInstance()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,7 +42,8 @@ class FragCreateEvents: Fragment(){
         descrEdTxt = view.findViewById(R.id.edit_description) as EditText
         titleEdTxt = view.findViewById(R.id.edit_title) as EditText
 
-        db = FirebaseFirestore.getInstance().document("Events/xD")
+        val db = FirebaseFirestore.getInstance()
+
 
         datePickerButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
@@ -97,12 +99,9 @@ class FragCreateEvents: Fragment(){
                     items.put("Name", name)
                     items.put("Owner", FirebaseAuth.getInstance().currentUser.toString())
 
-                    db.collection("Events").document("xD").set(items).addOnSuccessListener {
+                    db.collection("Events").document().set(items).addOnSuccessListener {
                         Toast.makeText(activity, "Utworzono wydarzenie", Toast.LENGTH_LONG).show()
                     }
-
-
-
 
                 } else {
                     Toast.makeText(activity, "Nie wybrano daty, godziny lub nazwy", Toast.LENGTH_LONG).show()
