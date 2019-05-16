@@ -20,7 +20,7 @@ buildscript {
         // in the individual module build.gradle files
 
         // Check for v3.1.2 or higher
-        classpath 'com.google.gms:google-services:4.0.1'
+        classpath 'com.google.gms:google-services:4.2.0'
         // Add dependency
         classpath 'io.fabric.tools:gradle:1.26.1'
     }
