@@ -1,4 +1,4 @@
-package com.example.grzybekapk.view.Service
+package com.example.grzybekapk.view.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -20,36 +20,30 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     // called when message is received
 
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-
-        if (remoteMessage!!.notification != null) {
-            Log.e(TAG, "Title: " + remoteMessage.notification!!.title!!)
-            Log.e(TAG, "Body: " + remoteMessage.notification!!.body!!)
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        if (remoteMessage.notification != null){
+            //show notification
+           // Log.d()
         }
-
-        if (remoteMessage.data.isNotEmpty()) {
-            Log.e(TAG, "Data: " + remoteMessage.data)
-        }
-
-       //sendNotification()
     }
 
-    override fun onNewToken(token: String?) {
+    /*override fun onNewToken(token: String?) {
         //monitoring if new token is generated
+        super.onNewToken(token)
         Log.d(TAG, "Refreshed token: $token")
         sendRegistrationToServer(token)
     }
 
     private fun sendRegistrationToServer(token: String?) {
         // TODO: Implement this method to send token to your app server.
-    }
+    }*/
 
     /**
      * Create and show a simple notification containing the received FCM message.
      *
      * @param messageBody FCM message body received.
      */
-    private fun sendNotification(messageBody: String) {
+    private fun sendNotification(messageBody: String?) {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -59,7 +53,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_stat_ic_notification)
-            .setContentTitle("Grzybek")     // TO DO !!!!!! zmien
+            .setContentTitle(getString(R.string.fcm_message))     // TO DO !!!!!! zmien
             .setContentText(messageBody)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)

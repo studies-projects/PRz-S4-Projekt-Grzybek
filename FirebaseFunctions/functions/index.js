@@ -14,6 +14,35 @@ exports.getCustomToken = functions.https.onCall(data => {
     return createFirebaseAccountCAS(myJSON);
 });
 
+exports.notifyNewEvent = functions.firestore
+    .document('/Events/{eventID}')
+    .onCreate((snap, context)=>{
+        const newEvent = snap.data();
+        const name = newEvent['Name'];
+        const notificationBody = newEvent['Desc'];
+        const owner = newEvent['Owner'];
+        const eventDate = newEvent['DateStart'];
+
+        const payload = {
+            notification: {
+                title: "Nowe wydarzenie na grzybku: " + name,
+                body: notificationBody,
+                clickAction: "FragStartScreen"
+            },
+            topic: "notifications"
+        };
+        admin.messaging().send(payload)
+            .then((response) => {
+            // Response is a message ID string.
+            console.log('Successfully sent message:', response);
+          })
+          .catch((error) => {
+            console.log('Error sending message:', error);
+          });
+
+
+    })
+
 
 async function createFirebaseAccountCAS(userJSON) {
     var ref = userJSON["cas:serviceResponse"]["cas:authenticationSuccess"];
@@ -49,7 +78,7 @@ async function createFirebaseAccountCAS(userJSON) {
     };
 
     // Adding additional information to datebase
-    const databaseTask = admin.firestore().doc(`/Users/${uid}`).set(aditionalInfo);    
+    const databaseTask = admin.firestore().doc(`/Users/${uid}`).set(aditionalInfo);
 
     // Wait for all async task to complete then generate and return a custom auth token.
     await Promise.all([userCreationTask, databaseTask]);
@@ -61,11 +90,11 @@ async function createFirebaseAccountCAS(userJSON) {
 
 function baseToJSON(response) {
     const convert = require('xml-js');
-    
+
     // Parspe respone (base64) to string (XML)
     const decoded = Buffer.from(response, 'base64').toString('ascii');
     console.log("Decoded base64 to string:", decoded);
-    
+
     // Parse XML to JS Object
     const options = {compact:true, spaces: 4}
     const result = convert.xml2js(decoded, options);

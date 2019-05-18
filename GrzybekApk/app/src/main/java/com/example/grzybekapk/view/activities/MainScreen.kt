@@ -9,6 +9,7 @@ import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -17,7 +18,9 @@ import com.example.grzybekapk.view.fragments.FragCalendar
 import com.example.grzybekapk.view.fragments.FragStartScreen
 import com.example.grzybekapk.view.fragments.FragMyEvents
 import com.example.grzybekapk.view.fragments.FragCreateEvents
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainScreen : AppCompatActivity() {
 
@@ -26,11 +29,21 @@ class MainScreen : AppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         setContentView(R.layout.activity_main_screen)
+
+        FirebaseMessaging.getInstance().subscribeToTopic("notifications")
+            .addOnCompleteListener { task ->
+                var msg = getString(R.string.msg_subscribed)
+                if (!task.isSuccessful) {
+                    msg = getString(R.string.msg_subscribe_failed)
+                }
+                Log.d(TAG, msg)
+                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            }
 
         toolbar = findViewById(R.id.toolbar)                                    // Creating handle for toolbar
         setSupportActionBar(toolbar)                                            // Setting toolbar in activity
@@ -117,5 +130,10 @@ class MainScreen : AppCompatActivity() {
         FirebaseAuth.getInstance().signOut()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+    }
+
+    companion object {
+
+        private const val TAG = "NotificationSubscribtion"
     }
 }
