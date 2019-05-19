@@ -52,9 +52,9 @@
 
         <meta-data
                 android:name="io.fabric.ApiKey"
-                android:value="a7d4d9944efa7f8e99e4a12110c124709840243b"/>
-
+                android:value="a7d4d9944efa7f8e99e4a12110c124709840243b" />
+        <meta-data android:name="preloaded_fonts" android:resource="@array/preloaded_fonts"/>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
