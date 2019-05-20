@@ -26,27 +26,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
            // Log.d()
         }
     }
+    //tak na prawde to tego nie potrzebujemy, uzywam domyslnych powiadomien wysylanych z serwera
+    //chcialem zrobic sam z przechodzeniem do activity ale d*pa
 
-    /*override fun onNewToken(token: String?) {
-        //monitoring if new token is generated
-        super.onNewToken(token)
-        Log.d(TAG, "Refreshed token: $token")
-        sendRegistrationToServer(token)
-    }
-
-    private fun sendRegistrationToServer(token: String?) {
-        // TODO: Implement this method to send token to your app server.
-    }*/
-
-    /**
-     * Create and show a simple notification containing the received FCM message.
-     *
-     * @param messageBody FCM message body received.
-     */
-    private fun sendNotification(messageBody: String?) {
+    /*private fun sendNotification(messageBody: String?) {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        val pendingIntent = PendingIntent.getActivity(this, 0 *//* Request code *//*, intent,
             PendingIntent.FLAG_ONE_SHOT)
 
         val channelId = "Default"
@@ -68,12 +54,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        notificationManager.notify(0 *//* ID of notification *//*, notificationBuilder.build())
     }
 
     companion object {
 
         private const val TAG = "MyFirebaseMsgService"
-    }
+    }*/
 
 }

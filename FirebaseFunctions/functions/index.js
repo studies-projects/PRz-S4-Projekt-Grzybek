@@ -27,7 +27,6 @@ exports.notifyNewEvent = functions.firestore
             notification: {
                 title: "Nowe wydarzenie na grzybku: " + name,
                 body: notificationBody,
-                clickAction: "FragStartScreen"
             },
             topic: "notifications"
         };
