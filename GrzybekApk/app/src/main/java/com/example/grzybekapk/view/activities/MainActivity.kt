@@ -39,38 +39,38 @@ class MainActivity : AppCompatActivity() {
 
         main = this
 
-        webview = web_view
+        /*
+        Skorzystać z sexownych funkcji kotlina:
+        let/apply/also
+         */
+        web_view.settings.apply {
+            // Enable java script in web view
+            javaScriptEnabled = true
 
-        // Get the web view settings instance
-        val settings = web_view.settings
+            // Enable and setup web view cache
+            setAppCacheEnabled(true)
+            cacheMode = WebSettings.LOAD_DEFAULT
+            setAppCachePath(cacheDir.path)
 
-        // Enable java script in web view
-        settings.javaScriptEnabled = true
+            // Enable zooming in web view
+            setSupportZoom(false)
+            builtInZoomControls = false
+            displayZoomControls = false
 
-        // Enable and setup web view cache
-        settings.setAppCacheEnabled(true)
-        settings.cacheMode = WebSettings.LOAD_DEFAULT
-        settings.setAppCachePath(cacheDir.path)
+            // Zoom web view text
+            textZoom = 125
 
-        // Enable zooming in web view
-        settings.setSupportZoom(false)
-        settings.builtInZoomControls = false
-        settings.displayZoomControls = false
+            // Enable disable images in web view
+            blockNetworkImage = false
+            // Whether the WebView should load image resources
+            loadsImagesAutomatically = true
+        }
 
-        // Zoom web view text
-        settings.textZoom = 125
-
-        // Enable disable images in web view
-        settings.blockNetworkImage = false
-        // Whether the WebView should load image resources
-        settings.loadsImagesAutomatically = true
-
-        val client = URLInterceptor()
-        web_view.webViewClient = client
-
-        web_view.addJavascriptInterface( MyJavaScriptInterface(), "HTMLOUT");
-
-        web_view.visibility = View.GONE
+        web_view.apply {
+            webViewClient = URLInterceptor()
+            addJavascriptInterface( MyJavaScriptInterface(), "HTMLOUT");
+            visibility = View.GONE
+        }
     }
 
     public override fun onStart() {
@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val result = task.result?.data as String
                     mAuth.signInWithCustomToken(result)
-                        .addOnCompleteListener() { t ->
+                        .addOnCompleteListener { t ->
                             if (t.isSuccessful) {
                                 Log.d("SignIN", "Signed")
                                 val intent = Intent(this, MainScreen::class.java)

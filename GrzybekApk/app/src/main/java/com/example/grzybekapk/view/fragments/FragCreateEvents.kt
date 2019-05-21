@@ -39,23 +39,27 @@ class FragCreateEvents: Fragment(){
         titleEdTxt = view.findViewById(R.id.edit_title) as EditText
 
 
-        datePickerButton.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(v: View?) {
-                if(!::date.isInitialized) {
-                    date = Calendar.getInstance()
-                }
-                var day: Int = date.get(Calendar.DAY_OF_MONTH)
-                var month: Int = date.get(Calendar.MONTH)
-                var year: Int = date.get(Calendar.YEAR)
-
-                dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, nYear, nMonth, nDay ->
-                    date.set(nYear, nMonth, nDay)
-                    datePickerButton.setText(SimpleDateFormat("dd-MM-yyyy").format(date.time))
-                }, year, month, day)
-                dpd.datePicker.minDate = System.currentTimeMillis()
-                dpd.show()
+        /*
+            Skrócic zapis listenera do kotlinowej wersji
+            Nigdzie nie wykorzystujecie parametru View...
+            A nawet jak trzeba to można się do niego odwołać jako 'it'
+         */
+        datePickerButton.setOnClickListener{
+            if(!::date.isInitialized) {
+                date = Calendar.getInstance()
             }
-        })
+            var day: Int = date.get(Calendar.DAY_OF_MONTH)
+            var month: Int = date.get(Calendar.MONTH)
+            var year: Int = date.get(Calendar.YEAR)
+
+            dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, nYear, nMonth, nDay ->
+                date.set(nYear, nMonth, nDay)
+                datePickerButton.setText(SimpleDateFormat("dd-MM-yyyy").format(date.time))
+            }, year, month, day)
+            dpd.datePicker.minDate = System.currentTimeMillis()
+            dpd.show()
+        }
+
 
         timePickerButton.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?){
