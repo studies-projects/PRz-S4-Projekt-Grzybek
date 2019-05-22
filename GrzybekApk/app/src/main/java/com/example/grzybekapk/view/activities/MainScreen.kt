@@ -18,7 +18,6 @@ import com.example.grzybekapk.view.fragments.FragCalendar
 import com.example.grzybekapk.view.fragments.FragStartScreen
 import com.example.grzybekapk.view.fragments.FragMyEvents
 import com.example.grzybekapk.view.fragments.FragCreateEvents
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 

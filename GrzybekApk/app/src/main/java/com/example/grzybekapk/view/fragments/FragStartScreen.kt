@@ -42,12 +42,6 @@ class FragStartScreen : Fragment(){
         val arrayAdapter = ArrayAdapter(activity,android.R.layout.simple_list_item_1,eventsArray)
         eventsListView.adapter = arrayAdapter
 
-        //it has to be this way
-        val timestamp = Timestamp.now()
-        val todayDate = Date(timestamp.getSeconds() - 7200 ) // now - 2 hours
-        var futureDate = Calendar.getInstance()
-        futureDate.add(Calendar.DATE, 7) // now + 7 days
-
         val local = Locale("pol") // localize date
         val dateFormat  = SimpleDateFormat("EEE dd'.' MMM yyyy 'o' HH:mm",local) // long date format
         val dateFormat2  = SimpleDateFormat("dd.MM HH:mm",local) // short date format
@@ -55,8 +49,13 @@ class FragStartScreen : Fragment(){
         // Access a Cloud Firestore instance from your Activity
         val db = FirebaseFirestore.getInstance()
 
+        val today = Calendar.getInstance()
+        today.add(Calendar.MINUTE,-120) //now - 2 hours
+        var futureDate = Calendar.getInstance()
+        futureDate.add(Calendar.DATE, 7) // now + 7 days
+
         db.collection("Events")
-            .whereGreaterThanOrEqualTo("DateStart",Timestamp(todayDate))//from now - 2 hours
+            .whereGreaterThanOrEqualTo("DateStart",Timestamp(today.time))//from now - 2 hours
             .whereLessThanOrEqualTo("DateStart",Timestamp(futureDate.time)) //to now + 7 days in the future
             .get()
             .addOnSuccessListener { documents ->

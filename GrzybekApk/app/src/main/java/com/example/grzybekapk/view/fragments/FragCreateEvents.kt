@@ -3,7 +3,6 @@ package com.example.grzybekapk.view.fragments
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
@@ -11,11 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.grzybekapk.R
-import com.example.grzybekapk.view.DataForEvents
-import kotlinx.android.synthetic.main.fragment_create_event.*
 import java.text.SimpleDateFormat
 import java.util.*
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.Timestamp
@@ -30,12 +26,6 @@ class FragCreateEvents: Fragment(){
     private lateinit var dpd: DatePickerDialog
     private lateinit var tpd: TimePickerDialog
     private lateinit var date: Calendar
-    val db = FirebaseFirestore.getInstance()
-    private var day: Int = 0
-    private var month: Int = 0
-    private var year: Int = 0
-    private var hour: Int = 0
-    private var minute: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -49,32 +39,29 @@ class FragCreateEvents: Fragment(){
 
         val db = FirebaseFirestore.getInstance()
 
-
-        datePickerButton.setOnClickListener(object : View.OnClickListener{
-            override fun onClick(v: View?) {
-                if(!::date.isInitialized) {
-                    date = Calendar.getInstance()
-                }
-                day = date.get(Calendar.DAY_OF_MONTH)
-                month = date.get(Calendar.MONTH)
-                year = date.get(Calendar.YEAR)
-
-                dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, nYear, nMonth, nDay ->
-                    date.set(nYear, nMonth, nDay)
-                    datePickerButton.setText(SimpleDateFormat("dd-MM-yyyy").format(date.time))
-                }, year, month, day)
-                dpd.datePicker.minDate = System.currentTimeMillis()
-                dpd.show()
+        datePickerButton.setOnClickListener{
+            if(!::date.isInitialized) {
+                date = Calendar.getInstance()
             }
-        })
+            var day: Int = date.get(Calendar.DAY_OF_MONTH)
+            var month: Int = date.get(Calendar.MONTH)
+            var year: Int = date.get(Calendar.YEAR)
+
+            dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, nYear, nMonth, nDay ->
+                date.set(nYear, nMonth, nDay)
+                datePickerButton.setText(SimpleDateFormat("dd-MM-yyyy").format(date.time))
+            }, year, month, day)
+            dpd.datePicker.minDate = System.currentTimeMillis()
+            dpd.show()
+        }
 
         timePickerButton.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?){
                 if(!::date.isInitialized) {
                     date = Calendar.getInstance()
                 }
-                hour = date.get(Calendar.HOUR_OF_DAY)
-                minute = date.get(Calendar.MINUTE)
+                var hour = date.get(Calendar.HOUR_OF_DAY)
+                var minute = date.get(Calendar.MINUTE)
 
                 tpd = TimePickerDialog(activity, TimePickerDialog.OnTimeSetListener{view, nHour, nMinute ->
                     date.set(Calendar.HOUR_OF_DAY, nHour)
