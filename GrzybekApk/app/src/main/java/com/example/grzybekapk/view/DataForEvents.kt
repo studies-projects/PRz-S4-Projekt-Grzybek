@@ -2,19 +2,14 @@ package com.example.grzybekapk.view
 
 
 import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.util.*
 
-class DataForEvents(
+data class DataForEvents(
     val nameOfEvent: String,
     val descriptionOfEvent: String,
     val date: Calendar,
     val organizer: String
-) {
-    val dateOfEventTxt: String
-    val timeOfEventTxt: String
-
-    init {
-        this.dateOfEventTxt = SimpleDateFormat("dd-MM-yyyy").format(date.time)
-        this.timeOfEventTxt = SimpleDateFormat("HH:mm").format(date.time)
-    }
+){
+    fun getDate() = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(date.time)
+    fun getHour() = SimpleDateFormat("HH:mm", Locale.US).format(date.time)
 }

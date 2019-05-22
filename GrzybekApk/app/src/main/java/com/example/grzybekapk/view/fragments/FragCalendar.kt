@@ -70,7 +70,7 @@ class FragCalendar : Fragment() {
                 .putExtra("name", data!!.nameOfEvent)
                 .putExtra("description", data.descriptionOfEvent)
                 .putExtra("organizer", data.organizer)
-                .putExtra("date", data.dateOfEventTxt + " o godz. " + data.timeOfEventTxt)
+                .putExtra("date", data.getDate() + " o godz. " + data.getHour())
             startActivity(i)
         }
 
@@ -81,7 +81,7 @@ class FragCalendar : Fragment() {
                     mutableBookings.clear()
                     for (booking in bookingsFromMap!!) {                                         //pętla foreach
                         val dt = booking.data as DataForEvents?                       // pobranie danych naszego eventu
-                        val message = dt!!.timeOfEventTxt + " " + dt.nameOfEvent
+                        val message = dt!!.getHour() + " " + dt.nameOfEvent
                         mutableBookings.add(message)
                     }
                     adapter.notifyDataSetChanged()

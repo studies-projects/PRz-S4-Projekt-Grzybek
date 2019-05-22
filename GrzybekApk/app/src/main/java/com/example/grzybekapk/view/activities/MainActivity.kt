@@ -38,39 +38,26 @@ class MainActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
 
         main = this
-
         webview = web_view
 
-        // Get the web view settings instance
-        val settings = web_view.settings
+        web_view.settings.apply {
+            javaScriptEnabled = true
+            setAppCacheEnabled(true)
+            cacheMode = WebSettings.LOAD_DEFAULT
+            setAppCachePath(cacheDir.path)
+            setSupportZoom(false)
+            builtInZoomControls = false
+            displayZoomControls = false
+            textZoom = 125
+            blockNetworkImage = false
+            loadsImagesAutomatically = true
+        }
 
-        // Enable java script in web view
-        settings.javaScriptEnabled = true
-
-        // Enable and setup web view cache
-        settings.setAppCacheEnabled(true)
-        settings.cacheMode = WebSettings.LOAD_DEFAULT
-        settings.setAppCachePath(cacheDir.path)
-
-        // Enable zooming in web view
-        settings.setSupportZoom(false)
-        settings.builtInZoomControls = false
-        settings.displayZoomControls = false
-
-        // Zoom web view text
-        settings.textZoom = 125
-
-        // Enable disable images in web view
-        settings.blockNetworkImage = false
-        // Whether the WebView should load image resources
-        settings.loadsImagesAutomatically = true
-
-        val client = URLInterceptor()
-        web_view.webViewClient = client
-
-        web_view.addJavascriptInterface( MyJavaScriptInterface(), "HTMLOUT");
-
-        web_view.visibility = View.GONE
+        web_view.apply {
+            webViewClient = URLInterceptor()
+            addJavascriptInterface( MyJavaScriptInterface(), "HTMLOUT");
+            visibility = View.GONE
+        }
     }
 
     public override fun onStart() {
@@ -115,7 +102,7 @@ class MainActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val result = task.result?.data as String
                     mAuth.signInWithCustomToken(result)
-                        .addOnCompleteListener() { t ->
+                        .addOnCompleteListener { t ->
                             if (t.isSuccessful) {
                                 Log.d("SignIN", "Signed")
                                 val intent = Intent(this, MainScreen::class.java)
