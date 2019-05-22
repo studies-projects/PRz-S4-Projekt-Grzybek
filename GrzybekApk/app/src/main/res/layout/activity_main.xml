@@ -7,7 +7,7 @@
         tools:context=".view.activities.MainActivity">
 
 
-        <Button
+        <android.support.design.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -15,7 +15,9 @@
                 android:text="@string/log_button"
                 android:layout_centerInParent="true"
                 android:onClick="onClickLogIn"
-                android:background="@drawable/login_button_states" android:visibility="invisible"/>
+                android:background="@drawable/login_button_states" style="@style/Widget.MaterialComponents.Button"
+                android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"
+                android:backgroundTint="@color/design_default_color_primary_dark"/>
         <WebView
                 android:id="@+id/web_view"
                 android:layout_width="match_parent"

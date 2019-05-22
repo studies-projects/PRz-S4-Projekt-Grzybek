@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.grzybekapk">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -9,10 +11,13 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:usesCleartextTraffic="true"
-    >
+            android:usesCleartextTraffic="true">
 
         <activity android:name=".view.activities.EventDetailsActivity">
+            <intent-filter>
+                <action android:name="EventDetailsActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity android:name=".view.activities.MainScreen">
         </activity>
@@ -23,6 +28,28 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+
+        <service
+                android:name=".view.service.MyFirebaseMessagingService"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/ic_stat_ic_notification" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/colorAccent" />
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel_id"
+                android:value="string/default_channel_id"/>
+
+
         <meta-data
                 android:name="io.fabric.ApiKey"
                 android:value="a7d4d9944efa7f8e99e4a12110c124709840243b" />

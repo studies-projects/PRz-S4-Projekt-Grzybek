@@ -15,4 +15,7 @@
     <string name="data">Rozpoczęcie:</string>
     <string name="eventText">textview</string>
     <string name="log_out">Wyloguj</string>
+    <string name="msg_subscribed">Subscribed to notifications"</string>
+    <string name="msg_subscribe_failed">Failed to subscribe to notifications</string>
+    <string name="fcm_message">Wydarzonko</string>
 </resources>
