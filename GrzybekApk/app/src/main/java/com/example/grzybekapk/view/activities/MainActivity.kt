@@ -16,14 +16,17 @@ import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.Toast
 import android.os.Handler
+import android.view.animation.AnimationUtils
 import android.webkit.WebView
 import android.webkit.JavascriptInterface
+import android.widget.ImageView
 import org.jsoup.Jsoup
 
 private lateinit var functions: FirebaseFunctions
 private lateinit var mAuth: FirebaseAuth
 private lateinit var main : MainActivity
 private var webview: WebView? = null
+private var b:ImageView? = null
 private const val CASurl = "https://cas.prz.edu.pl/cas-server/login?service=http%3A%2F%2Fwww.mpenar.kia.prz.edu.pl%2Fcasproxy.php%3Fredirect%3Dhttp%3A%2F%2Fwww.mpenar.kia.prz.edu.pl%26key%3Ded5fddea-9be9-4955-9718-fb429fed17f9"
 private var currentUser : FirebaseUser? = null
 
@@ -36,6 +39,8 @@ class MainActivity : AppCompatActivity() {
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_main)
         mAuth = FirebaseAuth.getInstance()
+
+        b=findViewById(R.id.imageView7)
 
         main = this
         webview = web_view
@@ -126,6 +131,10 @@ class URLInterceptor : WebViewClient() {
         if (url!!.contains("www.mpenar.kia.prz.edu.pl/?response=")) {
             tryLoginUser(view, url)
         }
+        if (!url!!.contains(CASurl)) {
+            view?.visibility = View.GONE
+            b?.startAnimation(AnimationUtils.loadAnimation(main,R.anim.rotate))
+        }
     }
 
     override fun onPageFinished(view: WebView, url: String) {
@@ -162,6 +171,7 @@ class URLInterceptor : WebViewClient() {
             main.login(getResponse(url))
             Log.d("LOGIN", getResponse(url))
         }else{
+            view?.visibility = View.VISIBLE
             view!!.loadUrl(CASurl)
         }
     }
