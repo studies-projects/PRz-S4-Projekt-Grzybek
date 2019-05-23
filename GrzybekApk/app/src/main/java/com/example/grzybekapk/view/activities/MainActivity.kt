@@ -126,6 +126,7 @@ class MainActivity : AppCompatActivity() {
 
 class URLInterceptor : WebViewClient() {
 
+    var transition = MediaPlayer.create(main,R.raw.batman)
     override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
         Log.d("onPageStarted", url)
@@ -168,7 +169,7 @@ class URLInterceptor : WebViewClient() {
 
     private fun tryLoginUser(view: WebView?, url: String) {
         if (checkAccess(url)){
-            MediaPlayer.create(main,R.raw.batman).start()
+            transition.start()
             main.login(getResponse(url))
             Log.d("LOGIN", getResponse(url))
         }else{
