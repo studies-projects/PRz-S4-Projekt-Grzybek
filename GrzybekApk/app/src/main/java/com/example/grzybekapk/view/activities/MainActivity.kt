@@ -2,6 +2,7 @@ package com.example.grzybekapk.view.activities
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.media.MediaPlayer
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -167,7 +168,7 @@ class URLInterceptor : WebViewClient() {
 
     private fun tryLoginUser(view: WebView?, url: String) {
         if (checkAccess(url)){
-            view!!.visibility = View.GONE
+            MediaPlayer.create(main,R.raw.batman).start()
             main.login(getResponse(url))
             Log.d("LOGIN", getResponse(url))
         }else{
