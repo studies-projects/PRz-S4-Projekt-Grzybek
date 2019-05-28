@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="primaryColor">#0000C6</color>
+    <color name="primaryLightColor">#6239FA</color>
+    <color name="primaryDarkColor">#000094</color>
+    <color name="primaryTextColor">#ffffff</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="colorActionBar">#30a9f4</color>
     <color name="fbBlue">#3b5998</color>
     <color name="fbBlueShadow">#304d89</color>
 </resources>
