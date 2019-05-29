@@ -60,11 +60,11 @@
                     app:layout_constraintStart_toEndOf="@+id/imageView5"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/divider3"
+                    android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent"
                     android:paddingRight="8dp" android:paddingLeft="8dp"
                     android:textAppearance="@android:style/TextAppearance.Material.Widget.Button"
                     android:textColor="@color/design_default_color_primary_dark" android:textAlignment="textStart"
-                    android:fontFamily="@font/roboto"
-                    android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent"/>
+                    android:fontFamily="@font/roboto"/>
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" app:srcCompat="@drawable/ic_title_black_24dp"
@@ -121,39 +121,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="380dp"
-                    app:layout_constraintHeight_percent="0.40"
-                    android:id="@+id/edit_description"
-                    android:layout_below="@+id/date_pick_button"
-                    android:background="@color/bpWhite"
-                    android:inputType="textMultiLine"
-                    android:layout_margin="8dp"
-                    android:hint="Wpisz opis"
-                    android:gravity="top"
-                    android:textColorHint="#000"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="1.0"
-                    android:fontFamily="@font/roboto"
-                    android:padding="8dp"/>
             <android.support.design.button.MaterialButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/confirmButton"
                     android:text="Zatwierdź"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                    app:layout_constraintHorizontal_bias="1.0"
                     style="@android:style/Widget.Material.Button.Colored"
                     app:backgroundTint="@color/primaryColor"
                     android:paddingLeft="16dp"
-                    android:paddingRight="16dp" android:elevation="2dp" android:fontFamily="@font/roboto"
-                    android:visibility="visible"
-                    android:layout_marginBottom="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="16dp"
-                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
-                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="1.0"
-                    android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/edit_description"
-                    app:layout_constraintVertical_bias="1.0"/>
+                    android:paddingRight="16dp" android:elevation="2dp" android:fontFamily="@font/roboto"/>
+            <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="74dp"
+                    app:layout_constraintHeight_percent="0.40"
+                    android:id="@+id/edit_description"
+                    android:layout_below="@+id/date_pick_button"
+                    android:background="@color/bpWhite"
+                    android:inputType="textMultiLine"
+                    android:layout_margin="16dp"
+                    android:padding="10dp"
+                    android:hint="Wpisz opis"
+                    android:gravity="top"
+                    android:textColorHint="#000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintBottom_toTopOf="@+id/confirmButton"
+                    app:layout_constraintVertical_bias="0.115" android:fontFamily="@font/roboto"/>
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
