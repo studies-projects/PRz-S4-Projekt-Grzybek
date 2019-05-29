@@ -7,7 +7,6 @@ import android.os.Handler
 import android.support.v7.widget.Toolbar
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.util.Log
@@ -21,6 +20,8 @@ import com.example.grzybekapk.view.fragments.FragMyEvents
 import com.example.grzybekapk.view.fragments.FragCreateEvents
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
+
+
 
 class MainScreen : AppCompatActivity() {
 
@@ -47,7 +48,7 @@ class MainScreen : AppCompatActivity() {
 
         toolbar = findViewById(R.id.toolbar)                                    // Creating handle for toolbar
         setSupportActionBar(toolbar)                                            // Setting toolbar in activity
-        supportActionBar?.setTitle(null)                                        // Deleting "Title" from toolbar
+        supportActionBar?.title = null                                        // Deleting "Title" from toolbar
         toolbar.setNavigationIcon(R.drawable.ic_menu)                           // Setting a button for toolbar
 
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -98,21 +99,20 @@ class MainScreen : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.frameLay)
 
-        //na chwilke  wywaliłem podwójne klikniecie
-
-        var count = supportFragmentManager.backStackEntryCount
-        /*if (doubleBackToExitPressedOnce) {
-            finishAffinity()
-        }*/
-        if (count == 0){
+        if (currentFragment is FragStartScreen){
+            if (doubleBackToExitPressedOnce) {
+                finishAffinity()
+            }
+            this.doubleBackToExitPressedOnce = true
+            Toast.makeText(this, "Wciśnij jeszcze raz żeby wyjść.", Toast.LENGTH_SHORT).show()
+            Handler().postDelayed( {
+                doubleBackToExitPressedOnce = false
+            }, 2000)
+        }else{
             super.onBackPressed()
-
         }
-        else{
-            supportFragmentManager.popBackStack()
-        }
-
 
     }
 
