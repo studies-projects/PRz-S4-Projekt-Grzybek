@@ -39,8 +39,7 @@ class FragCalendar : Fragment() {
         val mutableBookings = ArrayList<String>()
 
         val bookingsListView = view.findViewById<ListView>(R.id.bookings_listview)
-        val showPreviousMonthBut = view.findViewById<ImageButton>(R.id.prev_button)
-        val showNextMonthBut = view.findViewById<ImageButton>(R.id.next_button)
+
         showMonthYear = view.findViewById(R.id.month_view)
         val adapter = ArrayAdapter(context!!, android.R.layout.simple_list_item_1, mutableBookings)
 
@@ -98,8 +97,7 @@ class FragCalendar : Fragment() {
             }
         })
 
-        showPreviousMonthBut.setOnClickListener { compactCalendarView!!.scrollLeft() }
-        showNextMonthBut.setOnClickListener { compactCalendarView!!.scrollRight() }
+
 
         compactCalendarView!!.setAnimationListener(object : CompactCalendarView.CompactCalendarAnimationListener {
             override fun onOpened() {}

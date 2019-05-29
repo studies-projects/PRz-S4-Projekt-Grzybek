@@ -9,32 +9,36 @@
         android:fitsSystemWindows="true"
         android:id="@+id/drawer_layout">
 
+
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/frameLay">
 
+
         <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorActionBar"
+                android:layout_height="56dp"
                 android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" android:elevation="4dp"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:theme="@style/ToolBarStyle"
+                android:elevation="4dp"
+                android:background="@color/primaryColor" style="@style/AppTheme"/>
 
     </FrameLayout>
 
 
     <android.support.design.widget.NavigationView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:layout_gravity="start"
-        android:id="@+id/navBar"
-        app:menu="@menu/drawer_view">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:layout_gravity="start"
+            android:id="@+id/navBar"
+            app:menu="@menu/drawer_view"
+            style="@style/Widget.MaterialComponents.NavigationView">
 
     </android.support.design.widget.NavigationView>
 
