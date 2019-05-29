@@ -11,14 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.Crashlytics.TAG
 import com.example.grzybekapk.R
 import com.example.grzybekapk.view.DataForEvents
 import com.example.grzybekapk.view.activities.EventDetailsActivity
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_my_events.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -74,11 +72,11 @@ class FragStartScreen : Fragment(){
                     eventsList.add(nextEvent)
                     arrayAdapter.notifyDataSetChanged()
 
-                    Log.d(Crashlytics.TAG, "${document.id} => ${document.data}")
+                    Log.d(TAG, "${document.id} => ${document.data}")
                 }
             }
             .addOnFailureListener { exception ->
-                Log.w(Crashlytics.TAG, "Error getting documents: ", exception)
+                Log.w(TAG, "Error getting documents: ", exception)
             }
 
         eventsListView.onItemClickListener = AdapterView.OnItemClickListener{adapterView,view,i,l->
