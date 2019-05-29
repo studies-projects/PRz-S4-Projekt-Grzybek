@@ -26,6 +26,7 @@ class FragStartScreen : Fragment(){
         super.onAttach(context)
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         (activity as AppCompatActivity).supportActionBar?.setTitle("Najbliższe wydarzenia")

@@ -7,6 +7,7 @@ import android.os.Handler
 import android.support.v7.widget.Toolbar
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.util.Log
@@ -41,7 +42,7 @@ class MainScreen : AppCompatActivity() {
                     msg = getString(R.string.msg_subscribe_failed)
                 }
                 Log.d(TAG, msg)
-                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+               // Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
             }
 
         toolbar = findViewById(R.id.toolbar)                                    // Creating handle for toolbar
@@ -97,14 +98,22 @@ class MainScreen : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
+
+        //na chwilke  wywaliłem podwójne klikniecie
+
+        var count = supportFragmentManager.backStackEntryCount
+        /*if (doubleBackToExitPressedOnce) {
             finishAffinity()
+        }*/
+        if (count == 0){
+            super.onBackPressed()
+
         }
-        this.doubleBackToExitPressedOnce = true
-        Toast.makeText(this, "Wciśnij jeszcze raz żeby wyjść.", Toast.LENGTH_SHORT).show()
-        Handler().postDelayed( {
-            doubleBackToExitPressedOnce = false
-        }, 2000)
+        else{
+            supportFragmentManager.popBackStack()
+        }
+
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {   // Strange construction
@@ -121,6 +130,7 @@ class MainScreen : AppCompatActivity() {
         val newFragment = FragCreateEvents()
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.frameLay,newFragment)
+        transaction.addToBackStack(null)
         transaction.commit()
         navigationView.setCheckedItem(R.id.create_event)
     }
