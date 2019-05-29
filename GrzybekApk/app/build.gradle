@@ -53,4 +53,8 @@ dependencies {
     implementation files('libs/jsoup-1.11.3.jar')
 }
 
+androidExtensions {
+    experimental = true
+}
+
 apply plugin: 'com.google.gms.google-services'
