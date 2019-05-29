@@ -26,7 +26,7 @@ import java.util.*
 
 class FragCalendar : Fragment() {
 
-    private val dateFormatForMonth = SimpleDateFormat("MMMM - yyyy", Locale.getDefault())
+    private val dateFormatForMonth = SimpleDateFormat("MMMM - yyyy", Locale("pol"))
     private var compactCalendarView: CompactCalendarView? = null
     private var toolbar: ActionBar? = null
     private var showMonthYear: TextView? = null
@@ -65,12 +65,10 @@ class FragCalendar : Fragment() {
             val evClicked = bookingsFromMap!![position]
             val data = evClicked.data as DataForEvents?
 
-            val i = Intent(context, EventDetailsActivity::class.java)
-                .putExtra("name", data!!.nameOfEvent)
-                .putExtra("description", data.descriptionOfEvent)
-                .putExtra("organizer", data.organizer)
-                .putExtra("date", data.getDate() + " o godz. " + data.getHour())
-            startActivity(i)
+            val intent = Intent(activity,EventDetailsActivity::class.java)
+            intent.putExtra("event",data)
+
+            startActivity(intent)
         }
 
         compactCalendarView!!.setListener(object : CompactCalendarView.CompactCalendarViewListener {
@@ -134,7 +132,12 @@ class FragCalendar : Fragment() {
                     var date :Date = timestamp.toDate()
                     val cal = Calendar.getInstance()
                     cal.setTime(date)
-                    var event = DataForEvents(document.data["Name"] as String, document.data["Desc"] as String,cal,document.data["Owner"] as String)
+                    var event = DataForEvents(
+                        document.id,
+                        document.data["Name"] as String,
+                        document.data["Desc"] as String,
+                        cal,
+                        document.data["Owner"] as String)
 
                     createEvent(event.date,event)
 
