@@ -130,7 +130,6 @@ class MainScreen : AppCompatActivity() {
         val newFragment = FragCreateEvents()
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.frameLay,newFragment)
-        transaction.addToBackStack(null)
         transaction.commit()
         navigationView.setCheckedItem(R.id.create_event)
     }
@@ -143,6 +142,6 @@ class MainScreen : AppCompatActivity() {
 
     companion object {
 
-        private const val TAG = "NotificationSubscribtion"
+        private const val TAG = "NotifySubscription"
     }
 }
