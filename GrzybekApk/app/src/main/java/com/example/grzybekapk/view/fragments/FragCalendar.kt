@@ -134,7 +134,12 @@ class FragCalendar : Fragment() {
                     var date :Date = timestamp.toDate()
                     val cal = Calendar.getInstance()
                     cal.setTime(date)
-                    var event = DataForEvents(document.data["Name"] as String, document.data["Desc"] as String,cal,document.data["Owner"] as String)
+                    var event = DataForEvents(
+                        document.id,
+                        document.data["Name"] as String,
+                        document.data["Desc"] as String,
+                        cal,
+                        document.data["Owner"] as String)
 
                     createEvent(event.date,event)
 

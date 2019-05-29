@@ -8,6 +8,7 @@ import java.util.*
 
 @Parcelize
 data class DataForEvents(
+    val id: String,
     val nameOfEvent: String,
     val descriptionOfEvent: String,
     val date: Calendar,

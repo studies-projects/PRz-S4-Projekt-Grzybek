@@ -63,6 +63,7 @@ class FragStartScreen : Fragment(){
                     val calendar = Calendar.getInstance()
                     calendar.time = date.toDate()
                     var nextEvent = DataForEvents(
+                        document.id,
                         document.data["Name"] as String,
                         document.data["Desc"] as String,
                         calendar as Calendar,
