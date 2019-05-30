@@ -16,14 +16,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <ListView
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:id="@+id/eventsListView"
-                    android:backgroundTint="@color/design_default_color_primary_dark"
-                    app:layout_constraintTop_toTopOf="parent" style="@style/Widget.AppCompat.ListView"/>
             <android.support.design.widget.FloatingActionButton
                     android:layout_width="56dp"
                     android:layout_height="56dp"
@@ -36,6 +28,12 @@
                     app:backgroundTint="@color/primaryColor"
                     app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="16dp" android:layout_marginBottom="16dp" app:elevation="6dp"/>
+            <android.support.v7.widget.RecyclerView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp" app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/events_recycleview"
+            />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
