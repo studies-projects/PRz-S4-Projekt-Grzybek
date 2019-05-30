@@ -111,11 +111,12 @@ class FragCalendar : Fragment() {
     }
 
     fun getEvents(firstDayOfMonth: Calendar){
+
         compactCalendarView!!.removeAllEvents()
-        firstDayOfMonth.add(Calendar.MONTH,-1)
+
         var lastDayOfMonth = Calendar.getInstance()
         lastDayOfMonth.set(Calendar.YEAR,firstDayOfMonth.get(Calendar.YEAR))
-        lastDayOfMonth.set(Calendar.MONTH,firstDayOfMonth.get(Calendar.MONTH)+3)
+        lastDayOfMonth.set(Calendar.MONTH,firstDayOfMonth.get(Calendar.MONTH)+1)
         lastDayOfMonth.set(Calendar.DAY_OF_MONTH,1)
         lastDayOfMonth.set(Calendar.HOUR,0)
         lastDayOfMonth.set(Calendar.MINUTE,0)
@@ -131,7 +132,7 @@ class FragCalendar : Fragment() {
                     var timestamp = document.data["DateStart"] as Timestamp
                     var date :Date = timestamp.toDate()
                     val cal = Calendar.getInstance()
-                    cal.setTime(date)
+                    cal.time = date
                     var event = DataForEvents(
                         document.id,
                         document.data["Name"] as String,
@@ -139,7 +140,7 @@ class FragCalendar : Fragment() {
                         cal,
                         document.data["Owner"] as String)
 
-                    createEvent(event.date,event)
+                    compactCalendarView!!.addEvent(Event(Color.rgb(255, 0, 0), event.date.timeInMillis, event))
 
                     Log.d(TAG, "${document.id} => ${document.data}")
                 }
@@ -147,21 +148,5 @@ class FragCalendar : Fragment() {
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
             }
-        compactCalendarView!!.addEvents(events)
-        events.clear()
-    }
-
-    companion object {
-        private val events = ArrayList<Event>()
-
-        //Dwie statyczne funkcje do dodawania wydarzeń w kalendarzu, bierzcie jak swoje
-        fun createEvent(date: Calendar, `object`: DataForEvents) {
-            events.add(Event(Color.rgb(255, 0, 0), date.timeInMillis, `object`))
-        }
-
-        //Ta się różni tym, że kolor tej kropki można ustawić według uznania
-        fun createEvent(date: Calendar, `object`: DataForEvents, red: Int, green: Int, blue: Int) {
-            events.add(Event(Color.rgb(red, green, blue), date.timeInMillis, `object`))
-        }
     }
 }
