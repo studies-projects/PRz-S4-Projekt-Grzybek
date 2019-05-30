@@ -6,14 +6,10 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import com.crashlytics.android.Crashlytics.TAG
 import com.example.grzybekapk.R
@@ -23,7 +19,6 @@ import com.example.grzybekapk.view.EventsAdapter
 import com.example.grzybekapk.view.activities.EventDetailsActivity
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -52,7 +47,6 @@ class FragStartScreen : Fragment(){
         events_recycleview.layoutManager = LinearLayoutManager(activity,LinearLayout.VERTICAL,false)
 
         val local = Locale("pol") // localize date
-        val dateFormat  = SimpleDateFormat("EEE dd'.' MMM yyyy 'o' HH:mm",local) // long date format
         val dateFormat2  = SimpleDateFormat("dd.MM HH:mm",local) // short date format
 
         // Access a Cloud Firestore instance from your Activity
@@ -100,10 +94,8 @@ class FragStartScreen : Fragment(){
                 intent.putExtra("event",eventsList[pos])
                 startActivity(intent)
             }
-        }
-        )
-
-        }
+        })
     }
+}
 
 

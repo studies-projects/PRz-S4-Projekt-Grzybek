@@ -10,8 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import com.crashlytics.android.Crashlytics
 import com.example.grzybekapk.R
@@ -23,7 +21,6 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_my_events.*
-import kotlinx.android.synthetic.main.fragment_start_screen.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -43,7 +40,6 @@ class FragMyEvents: Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         val eventsList = ArrayList<DataForEvents>() //Array for DataForEvents objects
-        val eventsArray = ArrayList<String>()   // Array for event name and date for list view
         val events = ArrayList<Event>()
         val myEventsAdapter = EventsAdapter(events)
         myEventsRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayout.VERTICAL,false)
@@ -89,7 +85,6 @@ class FragMyEvents: Fragment() {
                 intent.putExtra("event",eventsList[pos])
                 startActivity(intent)
             }
-        }
-        )
+        })
     }
 }
