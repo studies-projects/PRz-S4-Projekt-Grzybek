@@ -20,6 +20,8 @@ import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_calendar.*
+import com.example.grzybekapk.view.extension.asTimestamp
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,7 +29,7 @@ import java.util.*
 class FragCalendar : Fragment() {
 
     private val dateFormatForMonth = SimpleDateFormat("MMMM - yyyy", Locale("pol"))
-    private var compactCalendarView: CompactCalendarView? = null
+//    private var compactCalendarView: CompactCalendarView? = null
     private var toolbar: ActionBar? = null
     private var showMonthYear: TextView? = null
     private var bookingsFromMap: List<Event>? = ArrayList()
@@ -44,22 +46,27 @@ class FragCalendar : Fragment() {
         val adapter = ArrayAdapter(context!!, android.R.layout.simple_list_item_1, mutableBookings)
 
         bookingsListView.adapter = adapter
-        compactCalendarView = view.findViewById(R.id.compactcalendar_view)
 
-        compactCalendarView!!.setUseThreeLetterAbbreviation(true)
-        compactCalendarView!!.setFirstDayOfWeek(Calendar.MONDAY)
-        compactCalendarView!!.setIsRtl(false)
-        compactCalendarView!!.displayOtherMonthDays(true)
+        /*
+        Rozmawialiśmy o tym:
+        nie robić findViewById
+         */
+        compactcalendar_view.apply {
+            setUseThreeLetterAbbreviation(true)
+            setFirstDayOfWeek(Calendar.MONDAY)
+            setIsRtl(false)
+            displayOtherMonthDays(true)
+        }
 
         toolbar = (activity as AppCompatActivity).supportActionBar
         toolbar!!.title = "Kalendarz"
 
         val firstDayOfMonth = Calendar.getInstance()
-        firstDayOfMonth.time = compactCalendarView!!.firstDayOfCurrentMonth
+        firstDayOfMonth.time = compactcalendar_view.firstDayOfCurrentMonth
         // o tu nie działa
         getEvents(firstDayOfMonth)
 
-        showMonthYear!!.text = dateFormatForMonth.format(compactCalendarView!!.firstDayOfCurrentMonth)
+        showMonthYear!!.text = dateFormatForMonth.format(compactcalendar_view.firstDayOfCurrentMonth)
 
         bookingsListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             val evClicked = bookingsFromMap!![position]
@@ -71,9 +78,9 @@ class FragCalendar : Fragment() {
             startActivity(intent)
         }
 
-        compactCalendarView!!.setListener(object : CompactCalendarView.CompactCalendarViewListener {
+        compactcalendar_view.setListener(object : CompactCalendarView.CompactCalendarViewListener {
             override fun onDayClick(dateClicked: Date) {
-                bookingsFromMap = compactCalendarView!!.getEvents(dateClicked)
+                bookingsFromMap = compactcalendar_view.getEvents(dateClicked)
                 if (bookingsFromMap != null) {
                     mutableBookings.clear()
                     for (booking in bookingsFromMap!!) {                                         //pętla foreach
@@ -88,8 +95,8 @@ class FragCalendar : Fragment() {
 
 
             override fun onMonthScroll(firstDayOfNewMonth: Date) {
-                showMonthYear!!.text = dateFormatForMonth.format(compactCalendarView!!.firstDayOfCurrentMonth)
-                firstDayOfMonth.time = compactCalendarView!!.firstDayOfCurrentMonth
+                showMonthYear!!.text = dateFormatForMonth.format(compactcalendar_view.firstDayOfCurrentMonth)
+                firstDayOfMonth.time = compactcalendar_view.firstDayOfCurrentMonth
 
                 getEvents(firstDayOfMonth)
             }
@@ -97,7 +104,7 @@ class FragCalendar : Fragment() {
 
 
 
-        compactCalendarView!!.setAnimationListener(object : CompactCalendarView.CompactCalendarAnimationListener {
+        compactcalendar_view.setAnimationListener(object : CompactCalendarView.CompactCalendarAnimationListener {
             override fun onOpened() {}
 
             override fun onClosed() {}
@@ -107,24 +114,27 @@ class FragCalendar : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        showMonthYear!!.text = dateFormatForMonth.format(compactCalendarView!!.firstDayOfCurrentMonth)
+        showMonthYear!!.text = dateFormatForMonth.format(compactcalendar_view.firstDayOfCurrentMonth)
     }
 
     fun getEvents(firstDayOfMonth: Calendar){
-        compactCalendarView!!.removeAllEvents()
+        compactcalendar_view.removeAllEvents()
         firstDayOfMonth.add(Calendar.MONTH,-1)
-        var lastDayOfMonth = Calendar.getInstance()
-        lastDayOfMonth.set(Calendar.YEAR,firstDayOfMonth.get(Calendar.YEAR))
-        lastDayOfMonth.set(Calendar.MONTH,firstDayOfMonth.get(Calendar.MONTH)+3)
-        lastDayOfMonth.set(Calendar.DAY_OF_MONTH,1)
-        lastDayOfMonth.set(Calendar.HOUR,0)
-        lastDayOfMonth.set(Calendar.MINUTE,0)
-        lastDayOfMonth.set(Calendar.SECOND,0)
-        lastDayOfMonth.set(Calendar.MILLISECOND,0)
 
         db.collection("Events")
-            .whereGreaterThanOrEqualTo("DateStart",Timestamp(firstDayOfMonth.time))
-            .whereLessThanOrEqualTo("DateStart",Timestamp(lastDayOfMonth.time))
+            .whereGreaterThanOrEqualTo("DateStart",firstDayOfMonth.asTimestamp())
+            // Ten warunek tu jest ok? Nie powinno być jakieś DateEnd?
+            .whereLessThanOrEqualTo("DateStart",
+                Calendar.getInstance().apply {
+                    set(Calendar.YEAR,firstDayOfMonth.get(Calendar.YEAR))
+                    set(Calendar.MONTH,firstDayOfMonth.get(Calendar.MONTH)+3)
+                    set(Calendar.DAY_OF_MONTH,1)
+                    set(Calendar.HOUR,0)
+                    set(Calendar.MINUTE,0)
+                    set(Calendar.SECOND,0)
+                    set(Calendar.MILLISECOND,0)
+                }.asTimestamp()
+            )
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
@@ -147,7 +157,7 @@ class FragCalendar : Fragment() {
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
             }
-        compactCalendarView!!.addEvents(events)
+        compactcalendar_view.addEvents(events)
         events.clear()
     }
 
