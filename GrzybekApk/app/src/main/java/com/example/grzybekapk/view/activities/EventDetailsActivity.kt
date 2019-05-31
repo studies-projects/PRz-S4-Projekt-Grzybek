@@ -24,20 +24,16 @@ class EventDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // Get value from Counts in document
         fun setCounter(docRef: DocumentReference, field : TextView) {
-            //var r = "69"
             docRef.get()
                 .addOnSuccessListener { document ->
                         document.data!!["Counts"]?.let{
-                            //r = it.toString()
                             field.text = it.toString()
                        }
                 }
                 .addOnFailureListener{
                     Log.d(Crashlytics.TAG, it.toString())
                 }
-            //return "213123"
         }
-
 
         setContentView(R.layout.activity_event_details)
 
@@ -49,26 +45,62 @@ class EventDetailsActivity : AppCompatActivity() {
         val docRef = db.collection("Events").document(event.id)
         val user = FirebaseAuth.getInstance().currentUser
         val uid = user?.uid.toString()
+        var going = false //is user going for event
 
         eventName.text = event.nameOfEvent
         eventOrganizer.text = event.organizer
         eventDescription.text = event.descriptionOfEvent
         eventDate.text =  SimpleDateFormat("EEE dd'.' MMM yyyy 'o' HH:mm", local).format(event.date.time)
-        setCounter(docRef, eventCounter)
+        setCounter(docRef, eventCounter) // setup default number for counter
+
+        // check if user is going for event
+        docRef.collection("Participants").document(uid).get()
+            .addOnSuccessListener {doc ->
+                if(doc.data != null)
+                {
+                    going = true
+                    event_button_going.text = getString(R.string.eventGoingT) //Wypisz sie ...
+                    Log.d("DOC", "EXTIST + $going + $doc")
+                } else {
+                    going = false
+                    event_button_going.text = getString(R.string.eventGoingN) // Zapisz sie
+                    Log.d("DOC", "NOTEXTIST + $going + $doc")
+                }
+            }
+
 
         event_button_going.setOnClickListener {
-            val data = HashMap<String, Any>()
-            data["timestamp"] = FieldValue.serverTimestamp()
-            docRef
-                .collection("Participants")
-                .document(uid).set(data)
+            if (going) {
+                docRef
+                    .collection("Participants")
+                    .document(uid).delete()
+                    .addOnSuccessListener {
+                        going = false
+                        event_button_going.text = getString(R.string.eventGoingN)
 
-            docRef
-                .update("Counts", FieldValue.increment(1))
-                .addOnSuccessListener {
-                    setCounter(docRef, eventCounter)
-                }
-            Toast.makeText(this@EventDetailsActivity, "CLICKED", Toast.LENGTH_SHORT).show()
+                        docRef
+                            .update("Counts", FieldValue.increment(-1))
+                            .addOnSuccessListener {
+                                setCounter(docRef, eventCounter)
+                            }
+                    }
+            } else {
+                val data = HashMap<String, Any>()
+                data["timestamp"] = FieldValue.serverTimestamp()
+                docRef
+                    .collection("Participants")
+                    .document(uid).set(data)
+                    .addOnSuccessListener {
+                        going = true
+                        event_button_going.text = getString(R.string.eventGoingT)
+
+                        docRef
+                            .update("Counts", FieldValue.increment(1))
+                            .addOnSuccessListener {
+                                setCounter(docRef, eventCounter)
+                            }
+                    }
+            }
         }
     }
 

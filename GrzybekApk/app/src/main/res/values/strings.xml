@@ -18,4 +18,6 @@
     <string name="msg_subscribed">Subscribed to notifications"</string>
     <string name="msg_subscribe_failed">Failed to subscribe to notifications</string>
     <string name="fcm_message">Wydarzonko</string>
+    <string name="eventGoingT">Wypisz się ...</string>
+    <string name="eventGoingN">Zapisz się!</string>
 </resources>
