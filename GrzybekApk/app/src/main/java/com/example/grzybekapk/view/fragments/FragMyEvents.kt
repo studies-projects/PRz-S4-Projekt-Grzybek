@@ -5,15 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import com.crashlytics.android.Crashlytics
 import com.example.grzybekapk.R
 import com.example.grzybekapk.view.DataForEvents
+import com.example.grzybekapk.view.Event
+import com.example.grzybekapk.view.EventsAdapter
 import com.example.grzybekapk.view.activities.EventDetailsActivity
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -38,10 +40,9 @@ class FragMyEvents: Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         val eventsList = ArrayList<DataForEvents>() //Array for DataForEvents objects
-        val eventsArray = ArrayList<String>()   // Array for event name and date for list view
-
-        val arrayAdapter = ArrayAdapter(activity,android.R.layout.simple_list_item_1,eventsArray)
-        myeventsListView.adapter = arrayAdapter
+        val events = ArrayList<Event>()
+        val myEventsAdapter = EventsAdapter(events)
+        myEventsRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayout.VERTICAL,false)
 
         val local = Locale("pol") // localize date
         val dateFormat2  = SimpleDateFormat("dd.MM.YYYY HH:mm",local) // short date format
@@ -66,9 +67,10 @@ class FragMyEvents: Fragment() {
                         calendar as Calendar,
                         document.data["Owner"] as String
                     )
-                    eventsArray.add(dateFormat2.format(date.toDate()) as String + "    " + document.data["Name"] as String)
+                    events.add(Event(document.data["Name"].toString(),dateFormat2.format(date.toDate()) as String,document.data["Desc"].toString()))
                     eventsList.add(nextEvent)
-                    arrayAdapter.notifyDataSetChanged()
+                    myEventsRecyclerView.adapter = myEventsAdapter
+                    myEventsAdapter.notifyDataSetChanged()
 
                     Log.d(Crashlytics.TAG, "${document.id} => ${document.data}")
                 }
@@ -77,11 +79,12 @@ class FragMyEvents: Fragment() {
                 Log.w(Crashlytics.TAG, "Error getting documents: ", exception)
             }
 
-        myeventsListView.onItemClickListener = AdapterView.OnItemClickListener{adapterView,view,i,l->
-            val intent = Intent(activity,EventDetailsActivity::class.java)
-            intent.putExtra("event",eventsList[i])
-
-            startActivity(intent)
-        }
+        myEventsAdapter.setOnItemClickListener(object : EventsAdapter.ClickListener {
+            override fun onClick(pos: Int, aView: View) {
+                val intent = Intent(activity,EventDetailsActivity::class.java)
+                intent.putExtra("event",eventsList[pos])
+                startActivity(intent)
+            }
+        })
     }
 }

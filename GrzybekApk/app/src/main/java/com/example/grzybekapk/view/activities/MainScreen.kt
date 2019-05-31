@@ -21,6 +21,8 @@ import com.example.grzybekapk.view.fragments.FragCreateEvents
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 
+
+
 class MainScreen : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
@@ -41,12 +43,12 @@ class MainScreen : AppCompatActivity() {
                     msg = getString(R.string.msg_subscribe_failed)
                 }
                 Log.d(TAG, msg)
-                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+               // Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
             }
 
         toolbar = findViewById(R.id.toolbar)                                    // Creating handle for toolbar
         setSupportActionBar(toolbar)                                            // Setting toolbar in activity
-        supportActionBar?.setTitle(null)                                        // Deleting "Title" from toolbar
+        supportActionBar?.title = null                                        // Deleting "Title" from toolbar
         toolbar.setNavigationIcon(R.drawable.ic_menu)                           // Setting a button for toolbar
 
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -97,14 +99,21 @@ class MainScreen : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            finishAffinity()
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.frameLay)
+
+        if (currentFragment is FragStartScreen){
+            if (doubleBackToExitPressedOnce) {
+                finishAffinity()
+            }
+            this.doubleBackToExitPressedOnce = true
+            Toast.makeText(this, "Wciśnij jeszcze raz żeby wyjść.", Toast.LENGTH_SHORT).show()
+            Handler().postDelayed( {
+                doubleBackToExitPressedOnce = false
+            }, 2000)
+        }else{
+            super.onBackPressed()
         }
-        this.doubleBackToExitPressedOnce = true
-        Toast.makeText(this, "Wciśnij jeszcze raz żeby wyjść.", Toast.LENGTH_SHORT).show()
-        Handler().postDelayed( {
-            doubleBackToExitPressedOnce = false
-        }, 2000)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {   // Strange construction
@@ -133,6 +142,6 @@ class MainScreen : AppCompatActivity() {
 
     companion object {
 
-        private const val TAG = "NotificationSubscribtion"
+        private const val TAG = "NotifySubscription"
     }
 }
