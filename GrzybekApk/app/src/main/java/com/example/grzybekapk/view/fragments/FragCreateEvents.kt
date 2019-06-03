@@ -2,6 +2,7 @@ package com.example.grzybekapk.view.fragments
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -10,6 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.grzybekapk.R
+import com.example.grzybekapk.view.DataForEvents
+import com.example.grzybekapk.view.activities.EventDetailsActivity
+import com.example.grzybekapk.view.activities.MainScreen
 import java.text.SimpleDateFormat
 import java.util.*
 import com.google.firebase.firestore.FirebaseFirestore
@@ -83,8 +87,6 @@ class FragCreateEvents: Fragment(){
                     && timePickerButton.text != resources.getString(R.string.default_time)
                     && name != "") {
 
-                   // FragCalendar.createEvent(date, DataForEvents(name, description, date, "Mateusz"))
-                  //wysylanko do bazy
 
                   //  var dateStr: String = "$day/$month/$year $hour:$minute:00"
                  //   var dateEpoch: Long = java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(dateStr).getTime() / 1000
@@ -96,12 +98,25 @@ class FragCreateEvents: Fragment(){
 
                     db.collection("Events").document().set(items).addOnSuccessListener {
                         Toast.makeText(activity, "Utworzono wydarzenie", Toast.LENGTH_LONG).show()
-                    }
+                        var fragment: Fragment? = FragStartScreen()
+                        val man = activity?.supportFragmentManager
+                        val trans = man?.beginTransaction()
 
+                        if(fragment!=null) {
+                            trans?.replace(R.id.frameLay, fragment)
+                            trans?.commit()
+                        }
+
+                        (activity as MainScreen).switchFr(view)
+
+                        val intent = Intent(activity, EventDetailsActivity::class.java)
+                            .putExtra("event", DataForEvents("", name, description, date, FirebaseAuth.getInstance().currentUser!!.uid))
+                        startActivity(intent)
+                    }
                 } else {
                     Toast.makeText(activity, "Nie wybrano daty, godziny lub nazwy", Toast.LENGTH_LONG).show()
                 }
-            } //Tworzenie eventu, który pojawi się w kalendarzu
+            }
         })
         return view
     }

@@ -76,13 +76,13 @@ class FragCalendar : Fragment() {
                 bookingsFromMap = compactCalendarView!!.getEvents(dateClicked)
                 if (bookingsFromMap != null) {
                     mutableBookings.clear()
-                    for (booking in bookingsFromMap!!) {                                         //pętla foreach
-                        val dt = booking.data as DataForEvents?                       // pobranie danych naszego eventu
+                    for (booking in bookingsFromMap!!) {
+                        val dt = booking.data as DataForEvents?
                         val message = dt!!.getHour() + " " + dt.nameOfEvent
                         mutableBookings.add(message)
                     }
                     adapter.notifyDataSetChanged()
-                } // Wyświetlenie wydarzeń w danym dniu
+                }
             }
 
 
