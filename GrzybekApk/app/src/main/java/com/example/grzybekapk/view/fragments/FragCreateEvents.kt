@@ -6,6 +6,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +33,14 @@ class FragCreateEvents: Fragment(){
     private lateinit var tpd: TimePickerDialog
     private lateinit var date: Calendar
 
+    fun EditText.onChange(cb: (String) -> Unit) {
+        this.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) { cb(s.toString()) }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_create_event, container, false)
@@ -40,6 +50,10 @@ class FragCreateEvents: Fragment(){
         confButton = view.findViewById(R.id.confirmButton) as Button
         descrEdTxt = view.findViewById(R.id.edit_description) as EditText
         titleEdTxt = view.findViewById(R.id.edit_title) as EditText
+
+
+
+        titleEdTxt.onChange { confButton.isEnabled = true }
 
         val db = FirebaseFirestore.getInstance()
 
@@ -54,6 +68,8 @@ class FragCreateEvents: Fragment(){
             dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, nYear, nMonth, nDay ->
                 date.set(nYear, nMonth, nDay)
                 datePickerButton.setText(SimpleDateFormat("dd-MM-yyyy").format(date.time))
+                if(!confButton.isEnabled)
+                    confButton.isEnabled = true
             }, year, month, day)
             dpd.datePicker.minDate = System.currentTimeMillis()
             dpd.show()
@@ -71,6 +87,8 @@ class FragCreateEvents: Fragment(){
                     date.set(Calendar.HOUR_OF_DAY, nHour)
                     date.set(Calendar.MINUTE, nMinute)
                     timePickerButton.setText(SimpleDateFormat("HH:mm").format(date.time))
+                    if(!confButton.isEnabled)
+                        confButton.isEnabled = true
                 }, hour, minute, true)
                 tpd.show()
             }
@@ -78,10 +96,12 @@ class FragCreateEvents: Fragment(){
 
         confButton.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
+
+                confButton.isEnabled = false
+
                 var name: String = titleEdTxt.text.toString()
                 var description = descrEdTxt.text.toString()
 
-                //TODO Jakieś ograniczenia do nazwy wydarzenia, typu minimalna liczba znaków itp
 
                 if(datePickerButton.text != resources.getString(R.string.default_date)
                     && timePickerButton.text != resources.getString(R.string.default_time)
