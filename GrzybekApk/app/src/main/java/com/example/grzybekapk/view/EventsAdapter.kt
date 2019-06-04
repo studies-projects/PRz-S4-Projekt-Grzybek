@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.example.grzybekapk.R
 
-class EventsAdapter(val eventsList:ArrayList<Event>) : RecyclerView.Adapter<EventsAdapter.ViewHolder>(){
+class EventsAdapter(val eventsList:ArrayList<DataForEvents>) : RecyclerView.Adapter<EventsAdapter.ViewHolder>(){
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val v =LayoutInflater.from(p0?.context).inflate(R.layout.event_item_itemview,p0,false)
         return ViewHolder(v)
@@ -24,10 +24,10 @@ class EventsAdapter(val eventsList:ArrayList<Event>) : RecyclerView.Adapter<Even
     }
 
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
-        val event : Event = eventsList[p1]
-        p0?.textViewTitle.text = event.title
-        p0?.textViewDate.text = event.date
-        p0?.textViewDescription.text = event.description
+        val event : DataForEvents = eventsList[p1]
+        p0?.textViewTitle.text = event.nameOfEvent
+        p0?.textViewDate.text = event.getDate() + ' ' + event.getHour()
+        p0?.textViewDescription.text = event.descriptionOfEvent
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView),View.OnClickListener{

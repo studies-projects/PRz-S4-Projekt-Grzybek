@@ -21,8 +21,6 @@ import com.example.grzybekapk.view.fragments.FragCreateEvents
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 
-
-
 class MainScreen : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
@@ -32,7 +30,6 @@ class MainScreen : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         setContentView(R.layout.activity_main_screen)
 

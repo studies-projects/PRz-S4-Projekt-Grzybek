@@ -14,13 +14,11 @@ import android.widget.LinearLayout
 import com.crashlytics.android.Crashlytics.TAG
 import com.example.grzybekapk.R
 import com.example.grzybekapk.view.DataForEvents
-import com.example.grzybekapk.view.Event
 import com.example.grzybekapk.view.EventsAdapter
 import com.example.grzybekapk.view.activities.EventDetailsActivity
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_start_screen.*
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -29,7 +27,6 @@ class FragStartScreen : Fragment(){
     override fun onAttach(context: Context?) {
         super.onAttach(context)
     }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,17 +38,11 @@ class FragStartScreen : Fragment(){
         super.onActivityCreated(savedInstanceState)
 
         val eventsList = ArrayList<DataForEvents>() //Array for DataForEvents objects
-
-        val events = ArrayList<Event>()
-        val eventsAdapter = EventsAdapter(events)
+        val eventsAdapter = EventsAdapter(eventsList)
         events_recycleview.layoutManager = LinearLayoutManager(activity,LinearLayout.VERTICAL,false)
-
-        val local = Locale("pol") // localize date
-        val dateFormat2  = SimpleDateFormat("dd.MM HH:mm",local) // short date format
 
         // Access a Cloud Firestore instance from your Activity
         val db = FirebaseFirestore.getInstance()
-
 
         val today = Calendar.getInstance()
         today.add(Calendar.MINUTE,-120) //now - 2 hours
@@ -75,7 +66,6 @@ class FragStartScreen : Fragment(){
                         calendar as Calendar,
                         document.data["Owner"] as String
                     )
-                    events.add(Event(document.data["Name"].toString(),dateFormat2.format(date.toDate()) as String,document.data["Desc"].toString()))
                     eventsList.add(nextEvent)
                     events_recycleview.adapter = eventsAdapter
                     eventsAdapter.notifyDataSetChanged()
@@ -86,7 +76,6 @@ class FragStartScreen : Fragment(){
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
             }
-
 
         eventsAdapter.setOnItemClickListener(object : EventsAdapter.ClickListener {
             override fun onClick(pos: Int, aView: View) {

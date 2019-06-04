@@ -14,6 +14,6 @@ data class DataForEvents(
     val date: Calendar,
     val organizer: String
 ) : Parcelable {
-    fun getDate() = SimpleDateFormat("dd-MMM-yyyy", Locale.US).format(date.time)
-    fun getHour() = SimpleDateFormat("HH:mm", Locale.US).format(date.time)
+    fun getDate() = SimpleDateFormat("dd.MM.yyyy", Locale("pol")).format(date.time)
+    fun getHour() = SimpleDateFormat("HH:mm", Locale("pol")).format(date.time)
 }

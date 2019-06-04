@@ -14,14 +14,12 @@ import android.widget.LinearLayout
 import com.crashlytics.android.Crashlytics
 import com.example.grzybekapk.R
 import com.example.grzybekapk.view.DataForEvents
-import com.example.grzybekapk.view.Event
 import com.example.grzybekapk.view.EventsAdapter
 import com.example.grzybekapk.view.activities.EventDetailsActivity
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_my_events.*
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -40,12 +38,8 @@ class FragMyEvents: Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         val eventsList = ArrayList<DataForEvents>() //Array for DataForEvents objects
-        val events = ArrayList<Event>()
-        val myEventsAdapter = EventsAdapter(events)
+        val myEventsAdapter = EventsAdapter(eventsList)
         myEventsRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayout.VERTICAL,false)
-
-        val local = Locale("pol") // localize date
-        val dateFormat2  = SimpleDateFormat("dd.MM.YYYY HH:mm",local) // short date format
 
         // Access a Cloud Firestore instance from your Activity
         val db = FirebaseFirestore.getInstance()
@@ -67,7 +61,6 @@ class FragMyEvents: Fragment() {
                         calendar as Calendar,
                         document.data["Owner"] as String
                     )
-                    events.add(Event(document.data["Name"].toString(),dateFormat2.format(date.toDate()) as String,document.data["Desc"].toString()))
                     eventsList.add(nextEvent)
                     myEventsRecyclerView.adapter = myEventsAdapter
                     myEventsAdapter.notifyDataSetChanged()

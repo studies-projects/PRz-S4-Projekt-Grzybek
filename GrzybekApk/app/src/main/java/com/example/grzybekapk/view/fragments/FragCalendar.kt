@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.crashlytics.android.Crashlytics.TAG
-
 import com.example.grzybekapk.R
 import com.example.grzybekapk.view.DataForEvents
 import com.example.grzybekapk.view.activities.EventDetailsActivity
@@ -20,7 +19,6 @@ import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
-
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -94,8 +92,6 @@ class FragCalendar : Fragment() {
                 getEvents(firstDayOfMonth)
             }
         })
-
-
 
         compactCalendarView!!.setAnimationListener(object : CompactCalendarView.CompactCalendarAnimationListener {
             override fun onOpened() {}
