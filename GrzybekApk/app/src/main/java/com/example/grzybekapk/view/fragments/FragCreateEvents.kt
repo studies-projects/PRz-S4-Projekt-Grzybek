@@ -33,14 +33,6 @@ class FragCreateEvents: Fragment(){
     private lateinit var tpd: TimePickerDialog
     private lateinit var date: Calendar
 
-    fun EditText.onChange(cb: (String) -> Unit) {
-        this.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) { cb(s.toString()) }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_create_event, container, false)
@@ -52,8 +44,6 @@ class FragCreateEvents: Fragment(){
         titleEdTxt = view.findViewById(R.id.edit_title) as EditText
 
 
-
-        titleEdTxt.onChange { confButton.isEnabled = true }
 
         val db = FirebaseFirestore.getInstance()
 
@@ -68,8 +58,6 @@ class FragCreateEvents: Fragment(){
             dpd = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { view, nYear, nMonth, nDay ->
                 date.set(nYear, nMonth, nDay)
                 datePickerButton.setText(SimpleDateFormat("dd-MM-yyyy").format(date.time))
-                if(!confButton.isEnabled)
-                    confButton.isEnabled = true
             }, year, month, day)
             dpd.datePicker.minDate = System.currentTimeMillis()
             dpd.show()
@@ -87,8 +75,6 @@ class FragCreateEvents: Fragment(){
                     date.set(Calendar.HOUR_OF_DAY, nHour)
                     date.set(Calendar.MINUTE, nMinute)
                     timePickerButton.setText(SimpleDateFormat("HH:mm").format(date.time))
-                    if(!confButton.isEnabled)
-                        confButton.isEnabled = true
                 }, hour, minute, true)
                 tpd.show()
             }
@@ -97,8 +83,6 @@ class FragCreateEvents: Fragment(){
         confButton.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
 
-                confButton.isEnabled = false
-
                 var name: String = titleEdTxt.text.toString()
                 var description = descrEdTxt.text.toString()
 
@@ -106,7 +90,7 @@ class FragCreateEvents: Fragment(){
                 if(datePickerButton.text != resources.getString(R.string.default_date)
                     && timePickerButton.text != resources.getString(R.string.default_time)
                     && name != "") {
-
+                    confButton.isEnabled = false
 
                   //  var dateStr: String = "$day/$month/$year $hour:$minute:00"
                  //   var dateEpoch: Long = java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(dateStr).getTime() / 1000
