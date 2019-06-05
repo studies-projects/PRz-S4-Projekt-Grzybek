@@ -22,7 +22,7 @@ exports.notifyNewEvent = functions.firestore
         const notificationBody = newEvent['Desc'];
         const owner = newEvent['Owner'];
         const eventDate = newEvent['DateStart'].toDate();
-        var time = eventDate.toLocaleTimeString();
+        var time = eventDate.toLocaleTimeString().substr(0,5);
 
         const payload = {
             notification: {
