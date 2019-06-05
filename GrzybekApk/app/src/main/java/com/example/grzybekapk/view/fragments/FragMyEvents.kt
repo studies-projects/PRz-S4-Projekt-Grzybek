@@ -17,6 +17,7 @@ import com.example.grzybekapk.view.DataForEvents
 import com.example.grzybekapk.view.EventsAdapter
 import com.example.grzybekapk.view.activities.EventDetailsActivity
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_my_events.*
 import java.util.*
@@ -34,7 +35,7 @@ class FragMyEvents: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         (activity as AppCompatActivity).supportActionBar?.setTitle("Moje wydarzenia")
-        return inflater!!.inflate(R.layout.fragment_my_events, container, false)
+        return inflater.inflate(R.layout.fragment_my_events, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -70,8 +71,8 @@ class FragMyEvents: Fragment() {
         futureDate.add(Calendar.DATE, 7) // now + 7 days
 
         FirebaseFirestore.getInstance().collection("Events")
-            .whereGreaterThanOrEqualTo("DateStart",Timestamp(today.time))//from now - 2 hours
-            .whereLessThanOrEqualTo("DateStart",Timestamp(futureDate.time)) //to now + 7 days in the future
+            .whereEqualTo("Owner", FirebaseAuth.getInstance().currentUser!!.uid)
+            .orderBy("DateStart")
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {

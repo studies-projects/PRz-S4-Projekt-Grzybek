@@ -12,7 +12,7 @@ android {
         applicationId "com.example.grzybekapk"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 2137
+        versionCode 2138
         versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
