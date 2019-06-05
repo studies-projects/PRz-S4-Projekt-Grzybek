@@ -21,12 +21,16 @@ exports.notifyNewEvent = functions.firestore
         const name = newEvent['Name'];
         const notificationBody = newEvent['Desc'];
         const owner = newEvent['Owner'];
-        const eventDate = newEvent['DateStart'];
+        const eventDate = newEvent['DateStart'].toDate();
+        var time = eventDate.toLocaleTimeString();
 
+        //var theDate = firebase.firestore.toDate(eventDate);
+        var dataString = "Data wydarzenia:";
         const payload = {
             notification: {
-                title: "Nowe wydarzenie na grzybku: " + name,
-                body: notificationBody,
+                title: "Nowe wydarzenie: " + name,
+                body: notificationBody + "\n\n" + "Data wydarzenia:\n" +
+                eventDate.toLocaleDateString() + "      " + time,
             },
             topic: "notifications"
         };
