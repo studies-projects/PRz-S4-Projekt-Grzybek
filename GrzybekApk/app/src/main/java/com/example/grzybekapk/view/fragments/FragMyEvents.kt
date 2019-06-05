@@ -65,11 +65,6 @@ class FragMyEvents: Fragment() {
 
     private fun getEvents() {
 
-        val today = Calendar.getInstance()
-        today.add(Calendar.MINUTE,-120) //now - 2 hours
-        var futureDate = Calendar.getInstance()
-        futureDate.add(Calendar.DATE, 7) // now + 7 days
-
         FirebaseFirestore.getInstance().collection("Events")
             .whereEqualTo("Owner", FirebaseAuth.getInstance().currentUser!!.uid)
             .orderBy("DateStart")
