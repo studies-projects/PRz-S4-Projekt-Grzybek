@@ -24,8 +24,6 @@ exports.notifyNewEvent = functions.firestore
         const eventDate = newEvent['DateStart'].toDate();
         var time = eventDate.toLocaleTimeString();
 
-        //var theDate = firebase.firestore.toDate(eventDate);
-        var dataString = "Data wydarzenia:";
         const payload = {
             notification: {
                 title: "Nowe wydarzenie: " + name,
