@@ -24,6 +24,9 @@ import kotlin.collections.ArrayList
 
 class FragStartScreen : Fragment(){
 
+    private val eventsList = ArrayList<DataForEvents>() //Array for DataForEvents objects
+    private val eventsAdapter = EventsAdapter(eventsList)
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
     }
@@ -31,25 +34,42 @@ class FragStartScreen : Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         (activity as AppCompatActivity).supportActionBar?.setTitle("Najbliższe wydarzenia")
-        return inflater!!.inflate(R.layout.fragment_start_screen, container, false)
+        return inflater.inflate(R.layout.fragment_start_screen, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val eventsList = ArrayList<DataForEvents>() //Array for DataForEvents objects
-        val eventsAdapter = EventsAdapter(eventsList)
+        getEvents()
+
         events_recycleview.layoutManager = LinearLayoutManager(activity,LinearLayout.VERTICAL,false)
 
-        // Access a Cloud Firestore instance from your Activity
-        val db = FirebaseFirestore.getInstance()
+        swipeContainer.setOnRefreshListener {
+            eventsAdapter.eventsList.clear()
+            getEvents()
+        }
+
+        swipeContainer.setColorSchemeResources(
+            R.color.primaryColor
+        )
+
+        eventsAdapter.setOnItemClickListener(object : EventsAdapter.ClickListener {
+            override fun onClick(pos: Int, aView: View) {
+                val intent = Intent(activity,EventDetailsActivity::class.java)
+                intent.putExtra("event",eventsList[pos])
+                startActivity(intent)
+            }
+        })
+    }
+
+    private fun getEvents() {
 
         val today = Calendar.getInstance()
         today.add(Calendar.MINUTE,-120) //now - 2 hours
         var futureDate = Calendar.getInstance()
         futureDate.add(Calendar.DATE, 7) // now + 7 days
 
-        db.collection("Events")
+        FirebaseFirestore.getInstance().collection("Events")
             .whereGreaterThanOrEqualTo("DateStart",Timestamp(today.time))//from now - 2 hours
             .whereLessThanOrEqualTo("DateStart",Timestamp(futureDate.time)) //to now + 7 days in the future
             .get()
@@ -77,13 +97,7 @@ class FragStartScreen : Fragment(){
                 Log.w(TAG, "Error getting documents: ", exception)
             }
 
-        eventsAdapter.setOnItemClickListener(object : EventsAdapter.ClickListener {
-            override fun onClick(pos: Int, aView: View) {
-                val intent = Intent(activity,EventDetailsActivity::class.java)
-                intent.putExtra("event",eventsList[pos])
-                startActivity(intent)
-            }
-        })
+        swipeContainer.isRefreshing = false
     }
 }
 

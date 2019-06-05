@@ -17,13 +17,16 @@ import com.example.grzybekapk.view.DataForEvents
 import com.example.grzybekapk.view.EventsAdapter
 import com.example.grzybekapk.view.activities.EventDetailsActivity
 import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_my_events.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 class FragMyEvents: Fragment() {
+
+    private val eventsList = ArrayList<DataForEvents>() //Array for DataForEvents objects
+    private val eventsAdapter = EventsAdapter(eventsList)
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
     }
@@ -37,16 +40,38 @@ class FragMyEvents: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val eventsList = ArrayList<DataForEvents>() //Array for DataForEvents objects
-        val myEventsAdapter = EventsAdapter(eventsList)
+        getEvents()
+
         myEventsRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayout.VERTICAL,false)
 
-        // Access a Cloud Firestore instance from your Activity
-        val db = FirebaseFirestore.getInstance()
+        swipeContainer.setOnRefreshListener {
+            eventsAdapter.eventsList.clear()
+            getEvents()
+        }
 
-        db.collection("Events")
-            .whereEqualTo("Owner", FirebaseAuth.getInstance().currentUser!!.uid)
-            .orderBy("DateStart")
+        swipeContainer.setColorSchemeResources(
+            R.color.primaryColor
+        )
+
+        eventsAdapter.setOnItemClickListener(object : EventsAdapter.ClickListener {
+            override fun onClick(pos: Int, aView: View) {
+                val intent = Intent(activity,EventDetailsActivity::class.java)
+                intent.putExtra("event",eventsList[pos])
+                startActivity(intent)
+            }
+        })
+    }
+
+    private fun getEvents() {
+
+        val today = Calendar.getInstance()
+        today.add(Calendar.MINUTE,-120) //now - 2 hours
+        var futureDate = Calendar.getInstance()
+        futureDate.add(Calendar.DATE, 7) // now + 7 days
+
+        FirebaseFirestore.getInstance().collection("Events")
+            .whereGreaterThanOrEqualTo("DateStart",Timestamp(today.time))//from now - 2 hours
+            .whereLessThanOrEqualTo("DateStart",Timestamp(futureDate.time)) //to now + 7 days in the future
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
@@ -62,8 +87,8 @@ class FragMyEvents: Fragment() {
                         document.data["Owner"] as String
                     )
                     eventsList.add(nextEvent)
-                    myEventsRecyclerView.adapter = myEventsAdapter
-                    myEventsAdapter.notifyDataSetChanged()
+                    myEventsRecyclerView.adapter = eventsAdapter
+                    eventsAdapter.notifyDataSetChanged()
 
                     Log.d(Crashlytics.TAG, "${document.id} => ${document.data}")
                 }
@@ -72,12 +97,6 @@ class FragMyEvents: Fragment() {
                 Log.w(Crashlytics.TAG, "Error getting documents: ", exception)
             }
 
-        myEventsAdapter.setOnItemClickListener(object : EventsAdapter.ClickListener {
-            override fun onClick(pos: Int, aView: View) {
-                val intent = Intent(activity,EventDetailsActivity::class.java)
-                intent.putExtra("event",eventsList[pos])
-                startActivity(intent)
-            }
-        })
+        swipeContainer.isRefreshing = false
     }
 }
