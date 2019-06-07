@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GrzybekApk</string>
+    <string name="app_name">Projekt Grzybek</string>
     <string name="log_button">Zaloguj przez USOS</string>
     <string name="menu_ekran_glowny">Ekran główny</string>
     <string name="menu_moje_wydarzenia">Moje wydarzenia</string>
@@ -7,9 +7,6 @@
     <string name="menu_kalendarz">Kalendarz</string>
     <string name="default_date">Data</string>
     <string name="default_time">Godzina</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="eventName">TextView</string>
     <string name="organizator">Organizator:</string>
     <string name="data">Rozpoczęcie:</string>

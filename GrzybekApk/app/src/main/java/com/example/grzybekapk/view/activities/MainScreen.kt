@@ -21,8 +21,6 @@ import com.example.grzybekapk.view.fragments.FragCreateEvents
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 
-
-
 class MainScreen : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
@@ -32,7 +30,6 @@ class MainScreen : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         setContentView(R.layout.activity_main_screen)
 
@@ -58,7 +55,7 @@ class MainScreen : AppCompatActivity() {
 
                 var fragment: Fragment? = null
 
-                when(menuItem.itemId){                                          // Funny switch
+                when(menuItem.itemId){
                     R.id.my_events -> {                                   // Creating fragments depending on choice
                         fragment = FragMyEvents()
                     }
@@ -88,7 +85,7 @@ class MainScreen : AppCompatActivity() {
                 true
         }
         if (savedInstanceState == null) {
-            navigationView.setCheckedItem(R.id.main_screen)                    // On the beginning "EkranGłówny" is checked
+            navigationView.setCheckedItem(R.id.main_screen)
             val fragStartScreen = FragStartScreen()                           // Creating fragment for first use
             val manager = supportFragmentManager                                // Fragment transaction
             val transaction = manager.beginTransaction()
@@ -134,6 +131,11 @@ class MainScreen : AppCompatActivity() {
         navigationView.setCheckedItem(R.id.create_event)
     }
 
+    fun switchFr(view: View){
+        val navigationView: NavigationView = findViewById(R.id.navBar)      // Creating handle for pull-out menu
+        navigationView.setCheckedItem(R.id.main_screen)
+    }
+
     fun logout(){
         FirebaseAuth.getInstance().signOut()
         val intent = Intent(this, MainActivity::class.java)
@@ -143,5 +145,6 @@ class MainScreen : AppCompatActivity() {
     companion object {
 
         private const val TAG = "NotifySubscription"
+
     }
 }
